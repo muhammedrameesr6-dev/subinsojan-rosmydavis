@@ -127,6 +127,9 @@
 
     setTimeout(() => {
       envelopeEl.style.display = 'none';
+      if (typeof armAndScheduleAutoScroll === 'function') {
+        armAndScheduleAutoScroll(450);
+      }
     }, 1150);
   }
 
@@ -524,6 +527,167 @@
     } else {
       startAutoPlay();
     }
+  }
+
+  // --- Automatic Cinematic Smooth Scrolling ---
+  const reducedMotionQuery = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+
+  const AUTO_SCROLL_SPEED_PX_PER_SEC = 48;
+  const AUTO_SCROLL_EASE_IN_MS = 1600;
+  const AUTO_SCROLL_EASE_OUT_PX = 200;
+
+  let autoScrollRafId = null;
+  let autoScrollDelayTimer = null;
+  let isAutoScrolling = false;
+  let userInteracted = false;
+  let scrollListenersArmed = false;
+  let virtualScrollY = 0;
+  let lastProgrammaticY = 0;
+  let autoScrollStartTime = 0;
+  let lastFrameTime = 0;
+
+  function prefersReducedMotion() {
+    return Boolean(reducedMotionQuery && reducedMotionQuery.matches);
+  }
+
+  function getMaxScrollY() {
+    return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  }
+
+  function pauseAutoScroll() {
+    userInteracted = true;
+    isAutoScrolling = false;
+    if (autoScrollDelayTimer) {
+      clearTimeout(autoScrollDelayTimer);
+      autoScrollDelayTimer = null;
+    }
+    if (autoScrollRafId !== null) {
+      cancelAnimationFrame(autoScrollRafId);
+      autoScrollRafId = null;
+    }
+  }
+
+  function onUserPointerOrTouch() {
+    pauseAutoScroll();
+  }
+
+  function onUserKeyDown(e) {
+    if (
+      e.key === 'ArrowDown' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'PageDown' ||
+      e.key === 'PageUp' ||
+      e.key === 'Home' ||
+      e.key === 'End' ||
+      e.key === ' ' ||
+      e.key === 'Spacebar' ||
+      e.key === 'Tab'
+    ) {
+      pauseAutoScroll();
+    }
+  }
+
+  function onWindowScroll() {
+    if (!isAutoScrolling) return;
+    if (Math.abs(window.scrollY - lastProgrammaticY) > 10) {
+      pauseAutoScroll();
+    }
+  }
+
+  function armInteractionListeners() {
+    if (scrollListenersArmed) return;
+    scrollListenersArmed = true;
+    window.addEventListener('wheel', onUserPointerOrTouch, { passive: true, capture: true });
+    window.addEventListener('touchstart', onUserPointerOrTouch, { passive: true, capture: true });
+    window.addEventListener('touchmove', onUserPointerOrTouch, { passive: true, capture: true });
+    window.addEventListener('pointerdown', onUserPointerOrTouch, { passive: true, capture: true });
+    window.addEventListener('keydown', onUserKeyDown, { passive: true, capture: true });
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
+  }
+
+  function stepAutoScroll(now) {
+    if (!isAutoScrolling || userInteracted || prefersReducedMotion()) {
+      pauseAutoScroll();
+      return;
+    }
+
+    if (document.hidden) {
+      lastFrameTime = now;
+      autoScrollRafId = requestAnimationFrame(stepAutoScroll);
+      return;
+    }
+
+    const dt = lastFrameTime ? Math.min(0.05, Math.max(0, (now - lastFrameTime) / 1000)) : 0;
+    lastFrameTime = now;
+
+    const maxScroll = getMaxScrollY();
+    if (maxScroll <= 0 || virtualScrollY >= maxScroll - 0.5) {
+      if (maxScroll > 0) {
+        window.scrollTo({ top: maxScroll, behavior: 'instant' });
+      }
+      isAutoScrolling = false;
+      autoScrollRafId = null;
+      return;
+    }
+
+    const elapsed = now - autoScrollStartTime;
+    const easeInProgress = Math.min(1, elapsed / AUTO_SCROLL_EASE_IN_MS);
+    const easeInFactor = easeInProgress * easeInProgress * (3 - 2 * easeInProgress);
+
+    const remaining = maxScroll - virtualScrollY;
+    const easeOutFactor = remaining < AUTO_SCROLL_EASE_OUT_PX
+      ? Math.max(0.32, remaining / AUTO_SCROLL_EASE_OUT_PX)
+      : 1;
+
+    const deltaY = AUTO_SCROLL_SPEED_PX_PER_SEC * easeInFactor * easeOutFactor * dt;
+    virtualScrollY = Math.min(maxScroll, virtualScrollY + deltaY);
+    lastProgrammaticY = virtualScrollY;
+
+    window.scrollTo({ top: virtualScrollY, behavior: 'instant' });
+
+    if (virtualScrollY >= maxScroll - 0.5) {
+      isAutoScrolling = false;
+      autoScrollRafId = null;
+      return;
+    }
+
+    autoScrollRafId = requestAnimationFrame(stepAutoScroll);
+  }
+
+  function startAutoScroll() {
+    if (userInteracted || prefersReducedMotion()) return;
+    if (envelopeEl && envelopeEl.style.display !== 'none') return;
+    const maxScroll = getMaxScrollY();
+    if (maxScroll <= 0 || window.scrollY >= maxScroll - 1) return;
+
+    isAutoScrolling = true;
+    virtualScrollY = window.scrollY;
+    lastProgrammaticY = virtualScrollY;
+    autoScrollStartTime = performance.now();
+    lastFrameTime = autoScrollStartTime;
+    autoScrollRafId = requestAnimationFrame(stepAutoScroll);
+  }
+
+  function armAndScheduleAutoScroll(delayMs) {
+    if (prefersReducedMotion()) return;
+    armInteractionListeners();
+    if (autoScrollDelayTimer) clearTimeout(autoScrollDelayTimer);
+    autoScrollDelayTimer = setTimeout(() => {
+      autoScrollDelayTimer = null;
+      startAutoScroll();
+    }, delayMs);
+  }
+
+  if (reducedMotionQuery && typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', function (e) {
+      if (e.matches) pauseAutoScroll();
+    });
+  }
+
+  if (new URLSearchParams(window.location.search).get('open') === '1') {
+    armAndScheduleAutoScroll(1200);
   }
 
   renderWishes();
