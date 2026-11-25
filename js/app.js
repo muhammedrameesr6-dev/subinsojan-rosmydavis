@@ -695,6 +695,7 @@
 
   // --- Background YouTube Music (https://youtu.be/il7oBI7lpNU) ---
   const YT_VIDEO_ID = 'il7oBI7lpNU';
+  const YT_START_SECONDS = 75; // 1:15
   const musicToggleBtn = document.getElementById('music-toggle-btn');
   const musicDiscIcon = document.getElementById('music-disc-icon');
   const musicTitleLabel = document.getElementById('music-title-label');
@@ -704,6 +705,7 @@
   let ytReady = false;
   let wantMusicPlaying = false;
   let isMusicPlaying = false;
+  let hasSeekedInitialStart = false;
   let fetchedTrackTitle = '';
 
   function formatTrackTitle(rawTitle) {
@@ -750,8 +752,8 @@
 
     window.onYouTubeIframeAPIReady = function () {
       ytPlayer = new window.YT.Player('yt-music-player', {
-        height: '80',
-        width: '120',
+        height: '2',
+        width: '2',
         videoId: YT_VIDEO_ID,
         playerVars: {
           autoplay: 0,
@@ -760,6 +762,7 @@
           fs: 0,
           loop: 1,
           playlist: YT_VIDEO_ID,
+          start: YT_START_SECONDS,
           modestbranding: 1,
           playsinline: 1,
           rel: 0
@@ -777,6 +780,10 @@
               try {
                 event.target.unMute();
                 event.target.setVolume(80);
+                if (!hasSeekedInitialStart) {
+                  hasSeekedInitialStart = true;
+                  event.target.seekTo(YT_START_SECONDS, true);
+                }
                 event.target.playVideo();
               } catch (_) {}
             } else {
@@ -786,6 +793,14 @@
           onStateChange: function (event) {
             if (!window.YT || !window.YT.PlayerState) return;
             if (event.data === window.YT.PlayerState.PLAYING) {
+              if (!hasSeekedInitialStart) {
+                hasSeekedInitialStart = true;
+                try {
+                  if (event.target.getCurrentTime() < YT_START_SECONDS - 2) {
+                    event.target.seekTo(YT_START_SECONDS, true);
+                  }
+                } catch (_) {}
+              }
               try {
                 const data = event.target.getVideoData();
                 if (data && data.title && !fetchedTrackTitle) {
@@ -797,6 +812,7 @@
               updateMusicPillUI(false);
             } else if (event.data === window.YT.PlayerState.ENDED) {
               if (wantMusicPlaying) {
+                event.target.seekTo(YT_START_SECONDS, true);
                 event.target.playVideo();
               }
             }
@@ -823,6 +839,10 @@
       try {
         ytPlayer.unMute();
         ytPlayer.setVolume(80);
+        if (!hasSeekedInitialStart) {
+          hasSeekedInitialStart = true;
+          ytPlayer.seekTo(YT_START_SECONDS, true);
+        }
         ytPlayer.playVideo();
       } catch (_) {}
     }

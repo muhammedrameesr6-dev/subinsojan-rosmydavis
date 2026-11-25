@@ -635,13 +635,10 @@ THE WEDDING OF OUR CHILDREN</span>
                   </div>
                 </div>
 
-                <!-- Footer Text & Referral -->
+                <!-- Footer Text -->
                 <span class="whitespace-pre-line flex flex-col items-center gap-1 px-6 text-center text-[11px] md:text-[13px] pt-1 mx-auto md:max-w-[560px]" style="color: rgb(255, 223, 175); font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif;">
                   <span dir="auto">Your presence would be the greatest gift we could receive!</span>
                 </span>
-                <div class="flex items-center justify-center">
-                  <a href="https://chungdoi.com?utm_source=invitation&amp;utm_medium=referral&amp;utm_campaign=wedding_subinsojan-rosmydavis-dearest" target="_blank" rel="noopener noreferrer" class="text-xs opacity-50 hover:opacity-70 transition-opacity" style="color: rgb(255, 239, 214);">♡ chungdoi.com</a>
-                </div>
               </div>
 
               <!-- Bottom Crest Decoration -->
@@ -759,8 +756,8 @@ THE WEDDING OF OUR CHILDREN</span>
     <span id="music-title-label" class="truncate" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Aaro Nee ♪</span>
   </button>
 
-  <!-- Hidden YouTube Background Audio Player (kept in-viewport at tiny opacity so mobile browsers don't throttle it) -->
-  <div aria-hidden="true" style="position:fixed;bottom:0;right:0;width:120px;height:80px;opacity:0.001;pointer-events:none;overflow:hidden;z-index:-1;">
+  <!-- Hidden YouTube Background Audio Player (in-viewport & visually clipped so it stays invisible without throttling) -->
+  <div aria-hidden="true" style="position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:0;clip-path:inset(50%);pointer-events:none;overflow:hidden;z-index:-1;">
     <div id="yt-music-player"></div>
   </div>
 
