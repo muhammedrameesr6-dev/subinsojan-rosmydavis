@@ -148,6 +148,9 @@
         window.history.replaceState({}, '', url.toString());
       } catch (_) {}
       playOpenAnimation();
+      if (typeof startBackgroundMusic === 'function') {
+        startBackgroundMusic();
+      }
     });
   }
 
@@ -165,8 +168,8 @@
         'DTSTART:20270117T060000Z',
         'DTEND:20270117T090000Z',
         'SUMMARY:Wedding of Subin Sojan & Rosmy Davis',
-        "LOCATION:St. Sebastian's Church, Rayarome",
-        "DESCRIPTION:Wedding of Subin Sojan & Rosmy Davis at 11:30 AM at St. Sebastian's Church\\, Rayarome. *Reception at Church Parish Hall",
+        "LOCATION:St. Sebastian's Church, Rayarome (https://maps.app.goo.gl/sMGZ8GRjTnfYFtte8)",
+        "DESCRIPTION:Wedding of Subin Sojan & Rosmy Davis at 11:30 AM at St. Sebastian's Church\\, Rayarome. *Reception at Church Parish Hall\\nMap: https://maps.app.goo.gl/sMGZ8GRjTnfYFtte8",
         'END:VEVENT',
         'END:VCALENDAR'
       ].join('\r\n');
@@ -688,6 +691,190 @@
 
   if (new URLSearchParams(window.location.search).get('open') === '1') {
     armAndScheduleAutoScroll(1200);
+  }
+
+  // --- Background YouTube Music (https://youtu.be/il7oBI7lpNU) ---
+  const YT_VIDEO_ID = 'il7oBI7lpNU';
+  const musicToggleBtn = document.getElementById('music-toggle-btn');
+  const musicDiscIcon = document.getElementById('music-disc-icon');
+  const musicTitleLabel = document.getElementById('music-title-label');
+  const musicStatusBars = document.getElementById('music-status-bars');
+
+  let ytPlayer = null;
+  let ytReady = false;
+  let wantMusicPlaying = false;
+  let isMusicPlaying = false;
+  let fetchedTrackTitle = '';
+
+  function formatTrackTitle(rawTitle) {
+    if (!rawTitle) return 'Aaro Nee';
+    const primary = rawTitle.split('|')[0].replace(/\(.*?\)/g, '').trim();
+    return primary || rawTitle;
+  }
+
+  function updateMusicPillUI(playing) {
+    isMusicPlaying = playing;
+    if (!musicToggleBtn) return;
+    if (musicDiscIcon) {
+      musicDiscIcon.classList.toggle('music-disc-spinning', playing);
+    }
+    if (musicStatusBars) {
+      musicStatusBars.style.opacity = playing ? '1' : '0.35';
+    }
+    if (musicTitleLabel) {
+      const baseTitle = formatTrackTitle(fetchedTrackTitle);
+      musicTitleLabel.textContent = playing ? baseTitle + ' ♪' : 'Play ' + baseTitle + ' ♪';
+    }
+  }
+
+  function showMusicPill() {
+    if (!musicToggleBtn) return;
+    musicToggleBtn.classList.remove('hidden');
+    musicToggleBtn.classList.add('flex');
+  }
+
+  function fetchTrackTitle() {
+    fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + YT_VIDEO_ID + '&format=json')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.title) {
+          fetchedTrackTitle = data.title;
+          updateMusicPillUI(isMusicPlaying);
+        }
+      })
+      .catch(() => {});
+  }
+
+  function initYouTubePlayer() {
+    if (ytPlayer || !document.getElementById('yt-music-player')) return;
+
+    window.onYouTubeIframeAPIReady = function () {
+      ytPlayer = new window.YT.Player('yt-music-player', {
+        height: '80',
+        width: '120',
+        videoId: YT_VIDEO_ID,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          loop: 1,
+          playlist: YT_VIDEO_ID,
+          modestbranding: 1,
+          playsinline: 1,
+          rel: 0
+        },
+        events: {
+          onReady: function (event) {
+            ytReady = true;
+            try {
+              const data = event.target.getVideoData();
+              if (data && data.title && !fetchedTrackTitle) {
+                fetchedTrackTitle = data.title;
+              }
+            } catch (_) {}
+            if (wantMusicPlaying) {
+              try {
+                event.target.unMute();
+                event.target.setVolume(80);
+                event.target.playVideo();
+              } catch (_) {}
+            } else {
+              updateMusicPillUI(false);
+            }
+          },
+          onStateChange: function (event) {
+            if (!window.YT || !window.YT.PlayerState) return;
+            if (event.data === window.YT.PlayerState.PLAYING) {
+              try {
+                const data = event.target.getVideoData();
+                if (data && data.title && !fetchedTrackTitle) {
+                  fetchedTrackTitle = data.title;
+                }
+              } catch (_) {}
+              updateMusicPillUI(true);
+            } else if (event.data === window.YT.PlayerState.PAUSED) {
+              updateMusicPillUI(false);
+            } else if (event.data === window.YT.PlayerState.ENDED) {
+              if (wantMusicPlaying) {
+                event.target.playVideo();
+              }
+            }
+          },
+          onError: function () {
+            updateMusicPillUI(false);
+          }
+        }
+      });
+    };
+
+    if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      tag.async = true;
+      document.head.appendChild(tag);
+    }
+  }
+
+  function startBackgroundMusic() {
+    wantMusicPlaying = true;
+    showMusicPill();
+    if (ytReady && ytPlayer && typeof ytPlayer.playVideo === 'function') {
+      try {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(80);
+        ytPlayer.playVideo();
+      } catch (_) {}
+    }
+  }
+
+  function toggleBackgroundMusic() {
+    if (!ytReady || !ytPlayer) {
+      wantMusicPlaying = !wantMusicPlaying;
+      updateMusicPillUI(wantMusicPlaying);
+      return;
+    }
+    if (isMusicPlaying) {
+      wantMusicPlaying = false;
+      try {
+        ytPlayer.pauseVideo();
+      } catch (_) {}
+      updateMusicPillUI(false);
+    } else {
+      wantMusicPlaying = true;
+      try {
+        ytPlayer.unMute();
+        ytPlayer.setVolume(80);
+        ytPlayer.playVideo();
+      } catch (_) {}
+    }
+  }
+
+  if (musicToggleBtn) {
+    musicToggleBtn.addEventListener('click', toggleBackgroundMusic);
+  }
+
+  fetchTrackTitle();
+  initYouTubePlayer();
+
+  if (new URLSearchParams(window.location.search).get('open') === '1') {
+    showMusicPill();
+    updateMusicPillUI(false);
+    wantMusicPlaying = true;
+    // Unlock audio on first user interaction if browser blocks unmuted autoplay on direct ?open=1 load
+    const unlockOnce = function () {
+      if (wantMusicPlaying && !isMusicPlaying && ytReady && ytPlayer) {
+        try {
+          ytPlayer.unMute();
+          ytPlayer.setVolume(80);
+          ytPlayer.playVideo();
+        } catch (_) {}
+      }
+      window.removeEventListener('pointerdown', unlockOnce, true);
+      window.removeEventListener('touchstart', unlockOnce, true);
+    };
+    window.addEventListener('pointerdown', unlockOnce, { passive: true, capture: true });
+    window.addEventListener('touchstart', unlockOnce, { passive: true, capture: true });
   }
 
   renderWishes();

@@ -170,6 +170,13 @@
       width: 22px;
       background-color: #ffdfaf;
     }
+    @keyframes music-disc-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .music-disc-spinning {
+      animation: music-disc-spin 6s linear infinite;
+    }
   </style>
 </head>
 <body>
@@ -389,12 +396,19 @@ THE WEDDING OF OUR CHILDREN</span>
                       </div>
 
                       <div class="mt-2 flex flex-col items-center gap-1 px-2 text-center">
-                        <p class="text-[15px] md:text-[17px] font-semibold tracking-wide" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                        <p class="inline-flex items-center justify-center gap-1.5 text-[15px] md:text-[17px] font-semibold tracking-wide" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="color: rgb(255, 223, 175);">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-6-5.686-6-10a6 6 0 1112 0c0 4.314-6 10-6 10z"></path>
+                            <circle cx="12" cy="11" r="2.2"></circle>
+                          </svg>
                           <span dir="auto">St. Sebastian's Church, Rayarome</span>
                         </p>
                         <p class="text-[13px] md:text-[14px] italic" style="color: rgb(255, 239, 214); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
                           <span dir="auto">*Reception at Church Parish Hall</span>
                         </p>
+                        <a href="https://maps.app.goo.gl/sMGZ8GRjTnfYFtte8" target="_blank" rel="noopener noreferrer" class="mt-0.5 inline-flex items-center gap-1 text-[12px] underline underline-offset-4 opacity-85 hover:opacity-100 transition-opacity" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                          <span dir="auto">View Location on Map</span>
+                        </a>
                       </div>
 
                       <!-- January 2027 Calendar -->
@@ -600,6 +614,27 @@ THE WEDDING OF OUR CHILDREN</span>
                   </div>
                 </section>
 
+                <!-- Blessing Quote & Warm Wishes -->
+                <div class="relative z-10 flex w-full max-w-[360px] flex-col items-center gap-3 px-6 pt-2 text-center md:max-w-[520px]">
+                  <img alt="" aria-hidden="true" class="pointer-events-none block h-auto w-[143px] max-w-none object-contain md:w-[180px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line2-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                  <blockquote class="flex flex-col items-center gap-1 pt-1">
+                    <p class="italic text-[15px] md:text-[18px] leading-relaxed" style="color: rgb(255, 223, 175); font-family: Lora, &quot;EB Garamond&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <span dir="auto">&ldquo;A cord of three strands is not quickly broken.&rdquo;</span>
+                    </p>
+                    <cite class="not-italic text-[12px] md:text-[13px] tracking-wider" style="color: rgba(255, 239, 214, 0.85); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <span dir="auto">&ndash; Ecclesiastes 4:12</span>
+                    </cite>
+                  </blockquote>
+                  <div class="mt-2 flex flex-col items-center gap-0.5">
+                    <p class="text-[13px] md:text-[15px]" style="color: rgba(255, 239, 214, 0.9); font-family: Lora, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <span dir="auto">With Love &amp; Warm Wishes,</span>
+                    </p>
+                    <p class="text-[17px] md:text-[20px] font-semibold" style="color: rgb(255, 223, 175); font-family: &quot;EB Garamond&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <span dir="auto">Mila Irene, Susmi &amp; Salas</span>
+                    </p>
+                  </div>
+                </div>
+
                 <!-- Footer Text & Referral -->
                 <span class="whitespace-pre-line flex flex-col items-center gap-1 px-6 text-center text-[11px] md:text-[13px] pt-1 mx-auto md:max-w-[560px]" style="color: rgb(255, 223, 175); font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif;">
                   <span dir="auto">Your presence would be the greatest gift we could receive!</span>
@@ -704,6 +739,29 @@ THE WEDDING OF OUR CHILDREN</span>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Floating Music Control Pill -->
+  <button id="music-toggle-btn"
+          type="button"
+          aria-label="Toggle background music"
+          class="fixed top-4 right-4 z-40 hidden items-center gap-2 rounded-full px-3.5 py-1.5 text-xs transition-all hover:scale-105"
+          style="background-color: rgba(0, 13, 29, 0.78); backdrop-filter: blur(8px); border: 1px solid rgba(255, 223, 175, 0.35); color: rgb(255, 239, 214); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); font-family: Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif;">
+    <svg id="music-disc-icon" class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: #ffdfaf;">
+      <circle cx="12" cy="12" r="9"></circle>
+      <circle cx="12" cy="12" r="2.5" fill="currentColor"></circle>
+    </svg>
+    <span id="music-status-bars" class="flex items-end gap-[2px] h-3" aria-hidden="true">
+      <span class="w-[2px] h-[5px] rounded-full bg-[#ffdfaf] opacity-70"></span>
+      <span class="w-[2px] h-[10px] rounded-full bg-[#ffdfaf]"></span>
+      <span class="w-[2px] h-[7px] rounded-full bg-[#ffdfaf] opacity-85"></span>
+    </span>
+    <span id="music-title-label" class="truncate" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Aaro Nee ♪</span>
+  </button>
+
+  <!-- Hidden YouTube Background Audio Player (kept in-viewport at tiny opacity so mobile browsers don't throttle it) -->
+  <div aria-hidden="true" style="position:fixed;bottom:0;right:0;width:120px;height:80px;opacity:0.001;pointer-events:none;overflow:hidden;z-index:-1;">
+    <div id="yt-music-player"></div>
   </div>
 
   <!-- Toast Container -->
