@@ -1,0 +1,530 @@
+(function () {
+  const WISHES_STORAGE_KEY = 'chungdoi_clone_wishes_subin_rosmy';
+  const RSVP_STORAGE_KEY = 'chungdoi_clone_rsvp_subin_rosmy';
+
+  const WISH_BATCHES = [
+    [
+      'Wishing the newlyweds the strength to face every challenge hand in hand.',
+      'May you build a warm home filled with laughter and joy.',
+      'May married life be the most wonderful journey the two of you ever take.',
+      'Wishing you happiness together until your hair turns grey, side by side for life.',
+      'May happiness be present in every moment you share together.'
+    ],
+    [
+      'Wishing Subin and Rosmy a lifetime of love, understanding, and endless blessings.',
+      'May today mark the beginning of your happiest chapter together.',
+      'Sending heartfelt congratulations and warm wishes for a joyful marriage.',
+      'May your bond grow deeper and sweeter with every passing year.',
+      'Wishing you both a future overflowing with peace, love, and cherished memories.'
+    ],
+    [
+      'Congratulations on finding your forever in each other. God bless your union!',
+      'May your love story continue to inspire everyone around you.',
+      'Wishing you countless sunrises filled with gratitude, laughter, and love.',
+      'Here’s to a beautiful wedding day and an even more beautiful life together.',
+      'May every day bring you new reasons to smile together.'
+    ]
+  ];
+
+  const envelopeEl = document.getElementById('invite-envelope');
+  const openBtn = document.getElementById('open-invite-btn');
+  const waxSealEl = document.getElementById('wax-seal');
+  const sealFxEl = document.getElementById('seal-fx');
+
+  const addToCalLink = document.getElementById('add-to-calendar-link');
+
+  const rsvpOpenBtn = document.getElementById('rsvp-open-btn');
+  const rsvpModal = document.getElementById('rsvp-modal');
+  const rsvpCloseBtn = document.getElementById('rsvp-close-btn');
+  const rsvpForm = document.getElementById('rsvp-form');
+  const rsvpNameInput = document.getElementById('rsvp-name');
+  const rsvpOptYes = document.getElementById('rsvp-opt-yes');
+  const rsvpOptNo = document.getElementById('rsvp-opt-no');
+  const rsvpGuestsWrap = document.getElementById('rsvp-guests-wrap');
+  const rsvpMsgWrap = document.getElementById('rsvp-msg-wrap');
+  const rsvpMessageInput = document.getElementById('rsvp-message');
+  const rsvpSubmitBtn = document.getElementById('rsvp-submit-btn');
+  const guestsDecBtn = document.getElementById('guests-dec-btn');
+  const guestsIncBtn = document.getElementById('guests-inc-btn');
+  const guestsCountVal = document.getElementById('guests-count-val');
+
+  const guestbookForm = document.getElementById('guestbook-form');
+  const guestbookName = document.getElementById('guestbook-name');
+  const guestbookWishes = document.getElementById('guestbook-wishes');
+  const wishesListEl = document.getElementById('wishes-list');
+
+  const aiWishBtn = document.getElementById('ai-wish-btn');
+  const wishesModal = document.getElementById('wishes-modal');
+  const wishesCloseX = document.getElementById('wishes-close-x');
+  const wishesCloseBtn = document.getElementById('wishes-close-btn');
+  const wishesRegenBtn = document.getElementById('wishes-regenerate-btn');
+  const suggestedWishesList = document.getElementById('suggested-wishes-list');
+
+  const toasterEl = document.getElementById('toaster');
+
+  let attendingChoice = null;
+  let guestCount = 1;
+  let currentWishBatch = 0;
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'bg-white text-gray-900 px-4 py-2.5 rounded-xl shadow-lg border border-gray-100 text-sm font-medium flex items-center gap-2 transition-all duration-300';
+    toast.style.pointerEvents = 'auto';
+    toast.innerHTML = '<span style="color:#10b981;">✓</span><span></span>';
+    toast.querySelector('span:last-child').textContent = message;
+    toasterEl.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(-8px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // --- Envelope Opening Transition ---
+  function finishOpenImmediate() {
+    if (envelopeEl) {
+      envelopeEl.style.display = 'none';
+    }
+    document.body.style.overflow = '';
+  }
+
+  function playOpenAnimation() {
+    if (!envelopeEl) return;
+    if (openBtn) openBtn.setAttribute('aria-busy', 'true');
+
+    // Expanding ring effect from seal
+    if (sealFxEl) {
+      const ring = document.createElement('div');
+      ring.style.cssText = 'position:absolute;left:0;top:0;width:56px;height:56px;border-radius:9999px;border:2px solid #ffdfaf;animation:seal-ring 0.7s ease-out forwards;';
+      sealFxEl.appendChild(ring);
+
+      // Particle burst
+      const colors = ['#ffdfaf', '#ffefd6', '#c39a5e', '#1b4a86'];
+      for (let i = 0; i < 12; i++) {
+        const angle = (Math.PI * 2 * i) / 12;
+        const dist = 45 + (i % 3) * 18;
+        const dx = Math.round(Math.cos(angle) * dist) + 'px';
+        const dy = Math.round(Math.sin(angle) * dist) + 'px';
+        const p = document.createElement('div');
+        p.style.cssText =
+          'position:absolute;left:0;top:0;width:8px;height:8px;border-radius:9999px;' +
+          'background:' + colors[i % colors.length] + ';' +
+          '--dx:' + dx + ';--dy:' + dy + ';--rot-start:15deg;--rot-end:180deg;' +
+          'animation:particle-burst 0.7s ease-out forwards;';
+        sealFxEl.appendChild(p);
+      }
+    }
+
+    if (waxSealEl) {
+      waxSealEl.style.animation = 'seal-break 0.55s ease-out forwards';
+    }
+
+    setTimeout(() => {
+      envelopeEl.style.animation = 'envelope-away 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards';
+      envelopeEl.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+    }, 280);
+
+    setTimeout(() => {
+      envelopeEl.style.display = 'none';
+    }, 1150);
+  }
+
+  if (new URLSearchParams(window.location.search).get('open') === '1') {
+    finishOpenImmediate();
+  } else {
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('open', '1');
+        window.history.replaceState({}, '', url.toString());
+      } catch (_) {}
+      playOpenAnimation();
+    });
+  }
+
+  // --- Add to Calendar ---
+  if (addToCalLink) {
+    addToCalLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      const icsLines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Subin & Rosmy Wedding//EN',
+        'BEGIN:VEVENT',
+        'UID:subin-rosmy-wedding-20270117@chungdoi-clone',
+        'DTSTAMP:20261125T100000Z',
+        'DTSTART:20270117T060000Z',
+        'DTEND:20270117T090000Z',
+        'SUMMARY:Wedding of Subin Sojan & Rosmy Davis',
+        "LOCATION:St. Sebastian's Church, Rayarome",
+        "DESCRIPTION:Wedding of Subin Sojan & Rosmy Davis at 11:30 AM at St. Sebastian's Church\\, Rayarome. *Reception at Church Parish Hall",
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([icsLines], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'subin-rosmy-wedding.ics';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Calendar invite downloaded!');
+    });
+  }
+
+  // --- RSVP Modal ---
+  function openRsvpModal() {
+    rsvpModal.classList.remove('hidden');
+    rsvpModal.classList.add('flex');
+  }
+
+  function closeRsvpModal() {
+    rsvpModal.classList.add('hidden');
+    rsvpModal.classList.remove('flex');
+  }
+
+  function styleRadioOption(labelEl, active, tone) {
+    const iconWrap = labelEl.querySelector('.rsvp-icon-wrap');
+    const iconSvg = iconWrap.querySelector('svg');
+    const textEl = labelEl.querySelector('.rsvp-label-text');
+
+    labelEl.classList.remove(
+      'border-gray-100', 'bg-gray-50/50', 'hover:border-gray-200', 'hover:bg-gray-50',
+      'border-emerald-500', 'bg-emerald-50/50', 'border-rose-400', 'bg-rose-50/50'
+    );
+    iconWrap.classList.remove('bg-gray-200', 'bg-emerald-500', 'bg-rose-500');
+    iconSvg.classList.remove('text-gray-500', 'text-white');
+    textEl.classList.remove('text-gray-700', 'text-emerald-700', 'text-rose-700');
+
+    if (active && tone === 'yes') {
+      labelEl.classList.add('border-emerald-500', 'bg-emerald-50/50');
+      iconWrap.classList.add('bg-emerald-500');
+      iconSvg.classList.add('text-white');
+      textEl.classList.add('text-emerald-700');
+    } else if (active && tone === 'no') {
+      labelEl.classList.add('border-rose-400', 'bg-rose-50/50');
+      iconWrap.classList.add('bg-rose-500');
+      iconSvg.classList.add('text-white');
+      textEl.classList.add('text-rose-700');
+    } else {
+      labelEl.classList.add('border-gray-100', 'bg-gray-50/50', 'hover:border-gray-200', 'hover:bg-gray-50');
+      iconWrap.classList.add('bg-gray-200');
+      iconSvg.classList.add('text-gray-500');
+      textEl.classList.add('text-gray-700');
+    }
+  }
+
+  function updateRsvpChoice(choice) {
+    attendingChoice = choice;
+    styleRadioOption(rsvpOptYes, choice === 'yes', 'yes');
+    styleRadioOption(rsvpOptNo, choice === 'no', 'no');
+
+    if (choice === 'yes') {
+      rsvpGuestsWrap.classList.remove('hidden');
+      rsvpMsgWrap.classList.remove('hidden');
+    } else {
+      rsvpGuestsWrap.classList.add('hidden');
+      rsvpMsgWrap.classList.remove('hidden');
+    }
+    rsvpSubmitBtn.disabled = false;
+  }
+
+  function updateGuestCounter(delta) {
+    guestCount = Math.max(1, Math.min(20, guestCount + delta));
+    guestsCountVal.textContent = String(guestCount);
+    guestsDecBtn.disabled = guestCount <= 1;
+    guestsIncBtn.disabled = guestCount >= 20;
+  }
+
+  rsvpOpenBtn.addEventListener('click', openRsvpModal);
+  rsvpCloseBtn.addEventListener('click', closeRsvpModal);
+  rsvpModal.addEventListener('click', function (e) {
+    if (e.target === rsvpModal) closeRsvpModal();
+  });
+
+  rsvpOptYes.querySelector('input').addEventListener('change', function () {
+    updateRsvpChoice('yes');
+  });
+  rsvpOptNo.querySelector('input').addEventListener('change', function () {
+    updateRsvpChoice('no');
+  });
+  guestsDecBtn.addEventListener('click', function () {
+    updateGuestCounter(-1);
+  });
+  guestsIncBtn.addEventListener('click', function () {
+    updateGuestCounter(1);
+  });
+
+  rsvpForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = rsvpNameInput.value.trim();
+    if (!name || !attendingChoice) return;
+    try {
+      const existing = JSON.parse(localStorage.getItem(RSVP_STORAGE_KEY) || '[]');
+      existing.push({
+        name: name,
+        attending: attendingChoice === 'yes',
+        guests: attendingChoice === 'yes' ? guestCount : 0,
+        message: rsvpMessageInput.value.trim(),
+        createdAt: new Date().toISOString()
+      });
+      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(existing));
+    } catch (_) {}
+    closeRsvpModal();
+    rsvpForm.reset();
+    attendingChoice = null;
+    guestCount = 1;
+    guestsCountVal.textContent = '1';
+    styleRadioOption(rsvpOptYes, false, 'yes');
+    styleRadioOption(rsvpOptNo, false, 'no');
+    rsvpGuestsWrap.classList.add('hidden');
+    rsvpMsgWrap.classList.add('hidden');
+    rsvpSubmitBtn.disabled = true;
+    showToast('Thank you! Your RSVP has been recorded.');
+  });
+
+  // --- Guestbook & Suggested Wishes ---
+  function loadWishes() {
+    try {
+      return JSON.parse(localStorage.getItem(WISHES_STORAGE_KEY) || '[]');
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function renderWishes() {
+    const wishes = loadWishes();
+    if (!wishes.length) {
+      wishesListEl.innerHTML =
+        '<p class="text-center text-sm opacity-70 flex flex-col items-center"><span dir="auto">No wishes yet. Be the first!</span></p>';
+      return;
+    }
+    wishesListEl.innerHTML = '';
+    wishes.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'rounded-lg border px-4 py-3 text-left';
+      card.style.cssText = 'border-color: rgba(255, 223, 175, 0.35); background-color: rgba(15, 47, 87, 0.45);';
+      const nameEl = document.createElement('p');
+      nameEl.className = 'text-sm font-semibold';
+      nameEl.style.color = '#ffdfaf';
+      nameEl.textContent = item.name;
+      const msgEl = document.createElement('p');
+      msgEl.className = 'mt-1 text-sm whitespace-pre-line';
+      msgEl.style.color = '#ffefd6';
+      msgEl.textContent = item.message;
+      card.appendChild(nameEl);
+      card.appendChild(msgEl);
+      wishesListEl.appendChild(card);
+    });
+  }
+
+  guestbookForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = guestbookName.value.trim();
+    const message = guestbookWishes.value.trim();
+    if (!name || !message) return;
+    const wishes = loadWishes();
+    wishes.unshift({ name: name, message: message, createdAt: new Date().toISOString() });
+    try {
+      localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(wishes));
+    } catch (_) {}
+    guestbookForm.reset();
+    renderWishes();
+    showToast('Your wishes have been sent!');
+  });
+
+  function renderSuggestedWishes() {
+    const list = WISH_BATCHES[currentWishBatch % WISH_BATCHES.length];
+    suggestedWishesList.innerHTML = '';
+    list.forEach((text) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'w-full text-left p-4 border border-gray-200 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition-all';
+      const p = document.createElement('p');
+      p.className = 'text-gray-800';
+      p.textContent = text;
+      btn.appendChild(p);
+      btn.addEventListener('click', function () {
+        guestbookWishes.value = text;
+        closeWishesModal();
+      });
+      suggestedWishesList.appendChild(btn);
+    });
+  }
+
+  function openWishesModal() {
+    renderSuggestedWishes();
+    wishesModal.classList.remove('hidden');
+    wishesModal.classList.add('flex');
+  }
+
+  function closeWishesModal() {
+    wishesModal.classList.add('hidden');
+    wishesModal.classList.remove('flex');
+  }
+
+  aiWishBtn.addEventListener('click', openWishesModal);
+  wishesCloseX.addEventListener('click', closeWishesModal);
+  wishesCloseBtn.addEventListener('click', closeWishesModal);
+  wishesRegenBtn.addEventListener('click', function () {
+    currentWishBatch = (currentWishBatch + 1) % WISH_BATCHES.length;
+    renderSuggestedWishes();
+  });
+  wishesModal.addEventListener('click', function (e) {
+    if (e.target === wishesModal) closeWishesModal();
+  });
+
+  // --- Live Wedding Countdown (Jan 17, 2027 11:30 AM IST) ---
+  const cdDaysEl = document.getElementById('cd-days');
+  const cdHoursEl = document.getElementById('cd-hours');
+  const cdMinutesEl = document.getElementById('cd-minutes');
+  const cdSecondsEl = document.getElementById('cd-seconds');
+  const cdSubtitleEl = document.getElementById('countdown-subtitle');
+  const weddingTargetMs = new Date('2027-01-17T11:30:00+05:30').getTime();
+
+  function pad2(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function updateCountdown() {
+    if (!cdDaysEl || !cdHoursEl || !cdMinutesEl || !cdSecondsEl) return;
+    const diff = weddingTargetMs - Date.now();
+    if (diff <= 0) {
+      cdDaysEl.textContent = '00';
+      cdHoursEl.textContent = '00';
+      cdMinutesEl.textContent = '00';
+      cdSecondsEl.textContent = '00';
+      if (cdSubtitleEl) {
+        cdSubtitleEl.innerHTML = '<span dir="auto">Today is our wedding day!</span>';
+      }
+      return;
+    }
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    cdDaysEl.textContent = pad2(days);
+    cdHoursEl.textContent = pad2(hours);
+    cdMinutesEl.textContent = pad2(minutes);
+    cdSecondsEl.textContent = pad2(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // --- Moments of Love 3-Photo Auto Carousel (Scroll-Triggered) ---
+  const momentsSection = document.getElementById('moments-section');
+  const momentCards = Array.from(document.querySelectorAll('.moments-card'));
+  const momentDots = Array.from(document.querySelectorAll('.moments-dot'));
+  const momentsPrevBtn = document.getElementById('moments-prev-btn');
+  const momentsNextBtn = document.getElementById('moments-next-btn');
+
+  if (momentsSection && momentCards.length === 3) {
+    let activeMoment = 0;
+    let autoPlayTimer = null;
+    let firstTriggerDone = false;
+
+    function applyMomentState(index) {
+      activeMoment = ((index % 3) + 3) % 3;
+      const leftIdx = (activeMoment + 2) % 3;
+      const rightIdx = (activeMoment + 1) % 3;
+
+      momentCards.forEach((card, i) => {
+        card.classList.remove('is-center', 'is-left', 'is-right');
+        if (i === activeMoment) card.classList.add('is-center');
+        else if (i === leftIdx) card.classList.add('is-left');
+        else if (i === rightIdx) card.classList.add('is-right');
+      });
+
+      momentDots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === activeMoment);
+      });
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      autoPlayTimer = setInterval(() => {
+        applyMomentState(activeMoment + 1);
+      }, 2600);
+    }
+
+    function stopAutoPlay() {
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = null;
+      }
+    }
+
+    function goToMoment(index) {
+      applyMomentState(index);
+      startAutoPlay();
+    }
+
+    if (momentsPrevBtn) {
+      momentsPrevBtn.addEventListener('click', () => goToMoment(activeMoment - 1));
+    }
+    if (momentsNextBtn) {
+      momentsNextBtn.addEventListener('click', () => goToMoment(activeMoment + 1));
+    }
+    momentDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => goToMoment(idx));
+    });
+    momentCards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        if (idx !== activeMoment) goToMoment(idx);
+      });
+    });
+
+    // Touch swipe support on mobile
+    let touchStartX = 0;
+    momentsSection.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    momentsSection.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches[0]) {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) {
+          goToMoment(dx < 0 ? activeMoment + 1 : activeMoment - 1);
+        }
+      }
+    }, { passive: true });
+
+    // Start rotating automatically when scrolled into view
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!firstTriggerDone) {
+              firstTriggerDone = true;
+              setTimeout(() => {
+                if (autoPlayTimer) return;
+                applyMomentState(activeMoment + 1);
+                startAutoPlay();
+              }, 900);
+            } else {
+              startAutoPlay();
+            }
+          } else {
+            stopAutoPlay();
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(momentsSection);
+    } else {
+      startAutoPlay();
+    }
+  }
+
+  renderWishes();
+})();

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subin Sojan &amp; Rosmy Davis | ChungDoi</title>
+  <meta name="theme-color" content="#fb3570" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="msapplication-TileColor" content="#fb3570" />
+  <meta name="description" content="We invite you to the wedding of Subin Sojan &amp; Rosmy Davis" />
+  <meta name="author" content="ChungDoi" />
+  <meta name="creator" content="ChungDoi" />
+  <meta name="publisher" content="ChungDoi" />
+  <meta name="category" content="wedding" />
+  <meta name="apple-mobile-web-app-title" content="ChungDoi" />
+  <meta property="og:title" content="Subin Sojan &amp; Rosmy Davis" />
+  <meta property="og:description" content="We invite you to the wedding of Subin Sojan &amp; Rosmy Davis" />
+  <meta property="og:site_name" content="ChungDoi" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Subin Sojan &amp; Rosmy Davis" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Subin Sojan &amp; Rosmy Davis" />
+  <meta name="twitter:description" content="We invite you to the wedding of Subin Sojan &amp; Rosmy Davis" />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="icon-v2.png" />
+
+  <link rel="preload" as="font" href="fonts/ViaodaLibre-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="fonts/TheNautigal-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="fonts/Lora-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="fonts/Pattaya-Regular.woff" type="font/woff" crossorigin />
+  <link rel="preload" as="image" href="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" />
+  <link rel="preload" as="image" href="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" />
+
+  <link rel="stylesheet" href="css/1e0309f8c26cc0c7.css" />
+  <link rel="stylesheet" href="css/08fc569d88870472.css" />
+
+  <style>
+    @keyframes envelope-away {
+      0% { transform: translatey(0) rotate(0deg); opacity: 1; }
+      15% { transform: translatey(10px) rotate(.5deg); opacity: 1; }
+      100% { transform: translatey(-120vh) rotate(-2deg); opacity: 0; }
+    }
+    @keyframes particle-burst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      15% { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(var(--rot-start, 15deg)); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.6) rotate(var(--rot-end, 180deg)); }
+    }
+    @keyframes seal-pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 4px 20px var(--shadow-color); }
+      50% { transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 6px 35px var(--shadow-color); }
+    }
+    @keyframes seal-break {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+      30% { transform: translate(-50%, -50%) scale(1.15) rotate(5deg); opacity: .9; filter: brightness(1.3); }
+      60% { transform: translate(-50%, -50%) scale(1.05) rotate(-3deg); opacity: .5; filter: brightness(1.5); }
+      100% { transform: translate(-50%, -50%) scale(0) rotate(15deg); opacity: 0; filter: brightness(2); }
+    }
+    @keyframes seal-ring {
+      0% { transform: translate(-50%, -50%) scale(.8); opacity: .8; }
+      100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+    }
+    @keyframes seal-flower-bloom {
+      0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+      45% { transform: scale(1.16) rotate(-3deg); filter: brightness(1.08); }
+      100% { transform: scale(1.06) rotate(0deg); filter: brightness(1.02); }
+    }
+    @keyframes shine {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+    @keyframes dragon-fly-forward {
+      0% { transform: scale(var(--fly-scale-x, 1), 1); filter: blur(0px); opacity: .7; }
+      40% { transform: scale(calc(var(--fly-scale-x, 1) * 1.6), 1.6); filter: blur(2px); opacity: .5; }
+      100% { transform: scale(calc(var(--fly-scale-x, 1) * 3), 3); filter: blur(10px); opacity: 0; }
+    }
+    @keyframes ambient-fall {
+      0% { transform: translatey(-8vh) translatex(0) rotate(0deg); opacity: 0; }
+      10% { opacity: .5; }
+      50% { transform: translatey(48vh) translatex(var(--sway, 20px)) rotate(180deg); opacity: .6; }
+      92% { opacity: .45; }
+      100% { transform: translatey(105vh) translatex(0) rotate(360deg); opacity: 0; }
+    }
+    @keyframes ambient-rise {
+      0% { transform: translatey(6vh) translatex(0) rotate(0deg); opacity: 0; }
+      12% { opacity: .45; }
+      55% { transform: translatey(-42vh) translatex(var(--sway, 20px)) rotate(8deg); opacity: .55; }
+      92% { opacity: .35; }
+      100% { transform: translatey(-92vh) translatex(0) rotate(0deg); opacity: 0; }
+    }
+    .moments-stage {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+    }
+    @media (min-width: 768px) {
+      .moments-stage {
+        height: 330px;
+      }
+    }
+    .moments-card {
+      position: absolute;
+      width: 186px;
+      height: 252px;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.65s ease,
+                  filter 0.65s ease,
+                  box-shadow 0.65s ease;
+      will-change: transform, opacity;
+      background-color: #ffffff;
+    }
+    @media (min-width: 768px) {
+      .moments-card {
+        width: 224px;
+        height: 304px;
+      }
+    }
+    .moments-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .moments-card.is-center {
+      z-index: 20;
+      opacity: 1;
+      filter: brightness(1);
+      transform: translateX(0) scale(1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(255, 223, 175, 0.28);
+    }
+    .moments-card.is-left {
+      z-index: 10;
+      opacity: 0.62;
+      filter: brightness(0.72);
+      transform: translateX(-64%) scale(0.82);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+    }
+    .moments-card.is-right {
+      z-index: 10;
+      opacity: 0.62;
+      filter: brightness(0.72);
+      transform: translateX(64%) scale(0.82);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+    }
+    .moments-dot {
+      height: 6px;
+      width: 6px;
+      border-radius: 9999px;
+      background-color: rgba(255, 239, 214, 0.35);
+      transition: width 0.35s ease, background-color 0.35s ease;
+      cursor: pointer;
+    }
+    .moments-dot.is-active {
+      width: 22px;
+      background-color: #ffdfaf;
+    }
+  </style>
+</head>
+<body>
+  <div data-invitation-page="true" class="contents">
+    <!-- Cover / Envelope Overlay -->
+    <div id="invite-envelope"
+         style="background:radial-gradient(ellipse at top, #0f2f57 0%, #001a3a 55%, #000d1d 100%)"
+         data-landing-screenshot-id="invite-envelope"
+         class="jsx-353cb38c53e4a74a fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
+
+      <!-- Ambient Falling Flowers -->
+      <div id="ambient-flowers" style="z-index:1" class="jsx-353cb38c53e4a74a absolute inset-0 pointer-events-none overflow-hidden">
+        <div style="left:12.64978347113356%;top:-30px;bottom:auto;color:#1b4a86;font-size:17.521003272384405px;--sway:-18.261083154939115px;animation:ambient-fall 20.02346720919013s ease-in-out -5.365638305363002s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:34.66602371074259%;top:-30px;bottom:auto;color:#ffefd6;font-size:14.857996073085815px;--sway:9.209621446207166px;animation:ambient-fall 22.008631819859147s ease-in-out -20.092490345075202s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:30.578763203229755%;top:-30px;bottom:auto;color:#1b4a86;font-size:17.306384014431387px;--sway:-25.54571462329477px;animation:ambient-fall 25.131842548027635s ease-in-out -18.338686151292546s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:69.8373120604083%;top:-30px;bottom:auto;color:#1b4a86;font-size:13.237370116170496px;--sway:-27.232990502379835px;animation:ambient-fall 20.977456271648407s ease-in-out -9.477775456330114s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:65.28861395316198%;top:-30px;bottom:auto;color:#ffdfaf;font-size:10.255276796407998px;--sway:-14.734026663936675px;animation:ambient-fall 19.243988923728466s ease-in-out -13.59214939766412s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:28.897683694958687%;top:-30px;bottom:auto;color:#ffefd6;font-size:18.005564651917666px;--sway:-14.52094386331737px;animation:ambient-fall 22.902002131566405s ease-in-out -8.39986255563571s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:68.0745586170815%;top:-30px;bottom:auto;color:#c39a5e;font-size:20.075142073445022px;--sway:8.799205287359655px;animation:ambient-fall 23.989611100405455s ease-in-out -0.11697659150632973s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:27.117935377173126%;top:-30px;bottom:auto;color:#c39a5e;font-size:18.37076577404514px;--sway:-15.093362820334733px;animation:ambient-fall 20.870816430076957s ease-in-out -6.418433074828948s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:56.02127716643736%;top:-30px;bottom:auto;color:#1b4a86;font-size:17.049959525465965px;--sway:-2.0657233195379376px;animation:ambient-fall 24.847087912261486s ease-in-out -2.924260035557721s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:49.8111781431362%;top:-30px;bottom:auto;color:#ffefd6;font-size:11.193866118323058px;--sway:-9.294806909747422px;animation:ambient-fall 21.847691122442484s ease-in-out -17.888100755602412s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+        <div style="left:23.427084763534367%;top:-30px;bottom:auto;color:#1b4a86;font-size:11.76856396207586px;--sway:-5.438366644084454px;animation:ambient-fall 19.28169727884233s ease-in-out -0.6337352835808174s infinite" class="jsx-353cb38c53e4a74a absolute">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><g><ellipse cx="12" cy="5" rx="2.2" ry="4.5"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(120 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(180 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(240 12 12)"></ellipse><ellipse cx="12" cy="5" rx="2.2" ry="4.5" transform="rotate(300 12 12)"></ellipse></g><circle cx="12" cy="12" r="1.8" fill-opacity="0.45"></circle></svg>
+        </div>
+      </div>
+
+      <!-- Envelope Card -->
+      <div id="envelope-card-wrap" style="z-index:10" class="jsx-353cb38c53e4a74a relative">
+        <div class="jsx-353cb38c53e4a74a relative w-[310px] sm:w-[340px] md:w-[520px] lg:w-[600px]">
+          <!-- Pulsing Gold Wax Seal -->
+          <div id="wax-seal"
+               style="top:50px;width:56px;height:56px;transform:translate(-50%, -50%);background:radial-gradient(circle at 30% 30%, #ffdfaf, rgb(225, 193, 145));--shadow-color:rgba(255, 223, 175, 0.5);box-shadow:0 4px 20px rgba(255, 223, 175, 0.5), inset 0 2px 4px rgba(255,255,255,0.3);z-index:30;animation:seal-pulse 2s ease-in-out infinite"
+               class="jsx-353cb38c53e4a74a absolute left-1/2 rounded-full flex items-center justify-center">
+            <svg style="fill:#511419" viewBox="0 0 24 24" class="jsx-353cb38c53e4a74a w-7 h-7">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" class="jsx-353cb38c53e4a74a"></path>
+            </svg>
+          </div>
+          <!-- Seal Effect Container (Ring & Particles injected on open) -->
+          <div id="seal-fx" class="absolute left-1/2 pointer-events-none" style="top:50px;z-index:35"></div>
+
+          <div style="box-shadow:0 25px 60px -12px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.2), 0 0 40px rgba(255, 223, 175, 0.15)" class="jsx-353cb38c53e4a74a relative rounded-lg">
+            <div style="background:linear-gradient(rgba(15,47,87,0.62), rgba(15,47,87,0.62)), url(&quot;images/themes/baroque-v2-dark-blue/bg.webp&quot;) 50% 0 / 100% auto repeat, #0f2f57;border:1px solid rgba(255, 223, 175, 0.15);clip-path:inset(0 round 8px)" class="jsx-353cb38c53e4a74a absolute inset-0 rounded-lg overflow-hidden">
+              <img src="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" alt="" aria-hidden="true" class="jsx-353cb38c53e4a74a absolute pointer-events-none z-0 h-auto w-[140px] max-w-none opacity-90 md:w-[160px] -top-[20px] -left-[20px] md:-top-[20px] md:-left-[20px] -scale-x-100">
+              <img src="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" alt="" aria-hidden="true" class="jsx-353cb38c53e4a74a absolute pointer-events-none z-0 h-auto w-[140px] max-w-none opacity-90 md:w-[160px] -bottom-[20px] -right-[20px] md:-bottom-[20px] md:-right-[10px] -scale-x-100">
+            </div>
+
+            <div class="jsx-353cb38c53e4a74a relative z-10 text-center px-6 pt-28 pb-14 md:pt-24 md:pb-8">
+              <h1 style="color:#ffdfaf;font-family:&quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, ChungDoiIndic, serif" class="jsx-353cb38c53e4a74a mb-2 flex flex-col items-center leading-tight text-3xl sm:text-4xl">
+                <span style="font-family:&quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, ChungDoiIndic, serif" class="jsx-353cb38c53e4a74a block w-full text-center">Subin Sojan</span>
+                <span style="font-family:&quot;The Nautigal&quot;, ChungDoiIndic, cursive" class="jsx-353cb38c53e4a74a block w-full text-center text-lg leading-none sm:text-xl">&amp;</span>
+                <span style="font-family:&quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, ChungDoiIndic, serif" class="jsx-353cb38c53e4a74a block w-full text-center">Rosmy Davis</span>
+              </h1>
+
+              <div class="jsx-353cb38c53e4a74a flex items-center justify-center gap-3 mb-2">
+                <div style="background:linear-gradient(to right, transparent, #ffdfaf)" class="jsx-353cb38c53e4a74a w-10 h-px"></div>
+                <span style="color:#ffdfaf;opacity:0.7" class="jsx-353cb38c53e4a74a text-sm">❦</span>
+                <div style="background:linear-gradient(to left, transparent, #ffdfaf)" class="jsx-353cb38c53e4a74a w-10 h-px"></div>
+              </div>
+
+              <div class="jsx-353cb38c53e4a74a mb-5"></div>
+
+              <div class="jsx-353cb38c53e4a74a mb-6 max-w-[300px] md:max-w-[380px] lg:max-w-[440px] mx-auto">
+                <p style="color:rgba(255, 239, 214, 0.85);font-family:&quot;Lora&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif" class="jsx-353cb38c53e4a74a text-[18px] font-light mb-2">
+                  <span dir="auto">Cordially Invites</span>
+                </p>
+              </div>
+
+              <a id="open-invite-btn"
+                 href="?open=1"
+                 rel="nofollow"
+                 aria-busy="false"
+                 style="background-color:#ffdfaf;color:#511419;box-shadow:0 4px 14px rgba(255, 223, 175, 0.35);font-family:&quot;Lora&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none"
+                 class="jsx-353cb38c53e4a74a relative px-8 py-2.5 text-lg font-semibold sm:font-medium rounded-full shadow-lg no-underline cursor-pointer flex w-fit items-center justify-center mx-auto overflow-hidden">
+                <span dir="auto">Open</span>
+                <div style="background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);animation:shine 3s ease-in-out infinite" class="jsx-353cb38c53e4a74a absolute top-0 h-full w-8 pointer-events-none"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Invitation Page -->
+    <div id="invite-renderer" dir="ltr" lang="en" class="cursor-pointer" data-landing-screenshot-id="invite-renderer" data-video-invitation="true">
+      <div class="min-h-screen w-full bg-white">
+        <main class="min-h-screen w-full">
+          <div class="flex w-full justify-center overflow-x-clip bg-white overflow-clip scrollbar-none" data-testid="baroque-v2-dark-blue-template">
+            <div data-showcase-root="" class="relative w-full max-w-[480px] md:max-w-[900px] md:mx-auto overflow-hidden md:border md:border-[#ffdfaf33] isolate" style="background-color: rgb(0, 26, 58); color: rgb(255, 239, 214);">
+              <!-- Damask Pattern Background -->
+              <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0" style="background-image: url(&quot;images/themes/baroque-v2-dark-blue/bg.webp&quot;); background-size: 100% auto; background-repeat: repeat; background-position: left top; opacity: 0.65;"></div>
+
+              <div class="relative z-10 flex flex-col items-center gap-[23px] py-[34px] md:gap-[30px] md:py-[44px]">
+                <!-- Hero Header -->
+                <header class="relative isolate flex w-full flex-col items-center pt-[47px] pb-[45px] md:pt-[58px] md:pb-[54px]">
+                  <p class="relative z-20 whitespace-pre-line text-center text-[13px] uppercase md:text-[15px]" style="font-family: &quot;Playfair Display&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 600; color: rgb(255, 223, 175); letter-spacing: 0.14em;">Save The Date</p>
+
+                  <div class="relative mt-[20px] w-[130.8%] max-w-none md:mt-[24px] md:w-[118%]">
+                    <div class="relative mx-auto w-full" style="aspect-ratio: 1 / 1;">
+                      <div class="absolute overflow-hidden" style="left: 26.7%; top: 13.44%; width: 46.55%; height: 71.64%; border-radius: 50% / 32.25%; box-shadow: rgba(0, 0, 0, 0.25) 2px 2px 4px;">
+                        <img alt="" class="h-full w-full object-cover" src="images/couple.jpg" />
+                      </div>
+                      <img alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full max-w-none object-fill" loading="eager" decoding="async" src="images/themes/baroque-v2-dark-blue/frame.webp" />
+                    </div>
+                  </div>
+
+                  <div class="relative mt-[39px] flex w-full max-w-[340px] flex-col items-center gap-[19px] px-4 text-center md:mt-[46px] md:max-w-[440px]">
+                    <span aria-hidden="true" class="pointer-events-none absolute left-1/2 top-1/2 text-[100px] leading-none md:text-[118px]" style="font-family: &quot;The Nautigal&quot;, ChungDoiIndic, cursive; color: rgba(255, 239, 214, 0.2); transform: translate(-50%, calc(-50% - 0.16em));">&amp;</span>
+                    <div class="relative z-10 flex w-full justify-center">
+                      <span class="whitespace-nowrap uppercase leading-none" style="font-family: &quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175); font-size: 52px;">Subin Sojan</span>
+                    </div>
+                    <div class="relative z-10 flex w-full justify-center">
+                      <span class="whitespace-nowrap uppercase leading-none" style="font-family: &quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175); font-size: 52px;">Rosmy Davis</span>
+                    </div>
+                  </div>
+                </header>
+
+                <!-- Ceremony Info Section -->
+                <section class="relative isolate flex w-full flex-col items-center">
+                  <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none top-[var(--orn-top)] md:top-[var(--orn-top-md)]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower5-decoration.webp" style="left: -18.2%; width: 31.9%; aspect-ratio: 132.44 / 339.52; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); --orn-top: 30.4%; --orn-top-md: 12%;" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none top-[var(--orn-top)] md:top-[var(--orn-top-md)]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower5-decoration.webp" style="right: -18.2%; width: 31.9%; aspect-ratio: 132.44 / 339.52; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1); --orn-top: 30.4%; --orn-top-md: 12%;" />
+
+                  <div class="relative z-10 flex w-full max-w-[366px] flex-col items-center gap-6 px-5 pt-[42px] md:max-w-[520px] md:gap-8 md:px-8 md:pt-[52px]">
+                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px]" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 700;">
+                      <span dir="auto">CEREMONY INFO</span>
+                    </h2>
+
+                    <div class="relative grid w-full grid-cols-[1fr_auto_1fr] grid-rows-[repeat(4,auto)] justify-center gap-x-[14px] gap-y-[3px] text-center" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <div class="row-span-4 grid grid-rows-subgrid min-w-0 justify-items-center">
+                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Sojan John</span></span>
+                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sophy Sojan</span></span>
+                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Mylakkkattu house</span></span>
+                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Rayarome, Alakode, Kannur</span></span>
+                      </div>
+                      <img alt="" aria-hidden="true" class="row-span-4 block h-[84px] w-auto max-w-none shrink-0 self-center object-contain md:h-[104px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line3-decoration.webp" />
+                      <div class="row-span-4 grid grid-rows-subgrid min-w-0 justify-items-center">
+                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Davis P.V</span></span>
+                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sindhu Davis</span></span>
+                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Payyappilly house</span></span>
+                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Kallur, Annamanada, Thrissur</span></span>
+                      </div>
+                    </div>
+
+                    <div class="flex w-full flex-col items-center gap-[10px]">
+                      <div class="relative flex flex-col gap-[3px] text-center text-[16px] md:text-[20px] uppercase mx-auto md:max-w-[560px]" style="white-space: pre-line; font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175);">
+                        <span dir="auto">WE JOYFULLY ANNOUNCE
+THE WEDDING OF OUR CHILDREN</span>
+                      </div>
+                      <img alt="" aria-hidden="true" class="pointer-events-none block h-auto w-[143px] max-w-none object-contain md:w-[180px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line2-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                    </div>
+
+                    <div data-showcase-keep="" class="w-full min-w-0 relative flex flex-col items-center text-center gap-3 md:gap-4">
+                      <h3 class="w-[80%] min-h-[80px] flex items-center justify-center leading-[54px] md:leading-[62px] whitespace-nowrap" style="font-size: 48px; font-family: &quot;EB Garamond&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175);">Subin Sojan</h3>
+                      <div class="text-[10px] md:text-[12px] uppercase" style="color: rgb(255, 239, 214); font-family: Uchen, Baskerville, ChungDoiIndic, serif; letter-spacing: 0.14em;"><span dir="auto">Groom</span></div>
+                      <div class="text-[35px] leading-none" style="color: rgb(255, 223, 175); font-family: &quot;Ms Madi&quot;, ChungDoiIndic, cursive;">&amp;</div>
+                      <h3 class="w-[80%] min-h-[80px] flex items-center justify-center leading-[54px] md:leading-[62px] whitespace-nowrap" style="font-size: 48px; font-family: &quot;EB Garamond&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175);">Rosmy Davis</h3>
+                      <div class="text-[10px] md:text-[12px] uppercase" style="color: rgb(255, 239, 214); font-family: Uchen, Baskerville, ChungDoiIndic, serif; letter-spacing: 0.14em;"><span dir="auto">Bride</span></div>
+                    </div>
+                  </div>
+
+                  <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px] mt-6 md:mt-8" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                </section>
+
+                <!-- Reception Info & Calendar Section -->
+                <section class="relative isolate flex w-full flex-col items-center">
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" style="left: -13.5%; top: -14px; width: 46.3%; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1);" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" style="right: -12.3%; top: -14px; width: 46.3%; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" style="left: -10.4%; bottom: 12px; width: 41.2%; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" style="right: -10.4%; bottom: 12px; width: 41.2%; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1);" />
+
+                  <div class="relative z-10 flex w-full max-w-[400px] flex-col items-center gap-[10px] px-5 pb-10 pt-[76px] md:max-w-[560px] md:px-8 md:pt-[92px]">
+                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px]" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 700;">
+                      <span dir="auto">WEDDING INFO</span>
+                    </h2>
+                    <img alt="" aria-hidden="true" class="pointer-events-none mb-3 block h-auto w-[143px] max-w-none object-contain md:w-[180px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line2-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+
+                    <div class="flex w-full flex-col items-center gap-[10px] text-center" data-landing-screenshot-id="invite-reception" style="font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175);">
+                      <h3 class="font-semibold uppercase text-[16px] md:text-[20px] flex flex-col items-center" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                        <span dir="auto">The wedding will take place&nbsp;at:</span>
+                      </h3>
+
+                      <div class="flex items-center justify-center gap-[25px] text-[14px] md:text-[15px] uppercase font-semibold whitespace-nowrap min-w-max" style="color: rgb(255, 239, 214); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                        <span><span dir="auto">11:30 AM</span></span>
+                        <span><span dir="auto">SUNDAY</span></span>
+                      </div>
+
+                      <div class="flex items-center justify-center gap-[9px]" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                        <img alt="" aria-hidden="true" class="pointer-events-none block h-[84px] w-auto max-w-none shrink-0 object-contain md:h-[91px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line4-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                        <span class="text-[52px] md:text-[57px] leading-none" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">17</span>
+                        <div class="h-[46px] w-px" style="background-color: rgb(255, 223, 175);"></div>
+                        <div class="flex flex-col items-start justify-center gap-1 text-left">
+                          <span class="text-[16px] md:text-[17px] uppercase" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;"><span dir="auto">JANUARY</span></span>
+                          <span class="text-[16px] md:text-[17px] uppercase" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;">2027</span>
+                        </div>
+                        <img alt="" aria-hidden="true" class="pointer-events-none block h-[84px] w-auto max-w-none shrink-0 object-contain md:h-[91px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line4-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1);" />
+                      </div>
+
+                      <div class="mt-2 flex flex-col items-center gap-1 px-2 text-center">
+                        <p class="text-[15px] md:text-[17px] font-semibold tracking-wide" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                          <span dir="auto">St. Sebastian's Church, Rayarome</span>
+                        </p>
+                        <p class="text-[13px] md:text-[14px] italic" style="color: rgb(255, 239, 214); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                          <span dir="auto">*Reception at Church Parish Hall</span>
+                        </p>
+                      </div>
+
+                      <!-- January 2027 Calendar -->
+                      <div class="mt-4 w-full max-w-[300px] px-2 md:max-w-[360px]">
+                        <div data-showcase-keep="" class="w-full max-w-[280px] md:max-w-[310px] mx-auto rounded-lg overflow-hidden !max-w-none !w-full" style="color: rgb(255, 223, 175);">
+                          <div class="text-center py-2.5 text-[13px] md:text-[14px] font-semibold tracking-wide border-b text-[18px] md:text-[20px]" style="border-color: color-mix(in srgb, rgb(255, 223, 175) 27%, transparent); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; color: rgb(255, 223, 175);">January 2027</div>
+                          <div class="grid grid-cols-7 border-b-2" style="border-color: rgb(255, 223, 175);">
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Mo</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Tu</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">We</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Th</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Fr</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Sa</div>
+                            <div class="text-center py-1.5 text-[10px] md:text-[11px] font-medium opacity-60">Su</div>
+                          </div>
+                          <div class="grid grid-cols-7 gap-y-0.5 px-1 py-2">
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">1</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">2</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">3</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">4</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">5</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">6</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">7</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">8</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">9</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">10</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">11</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">12</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">13</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">14</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">15</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">16</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]">
+                              <div class="relative w-[26px] h-[24px] md:w-[30px] md:h-[28px] flex items-center justify-center">
+                                <svg viewBox="0 0 24 22" class="absolute inset-0 w-full h-full drop-shadow-sm" fill="#ffdfaf">
+                                  <path d="M12 21C12 21 1.5 13.5 1.5 7.5C1.5 4.46 3.96 2 7 2C8.76 2 10.35 2.81 11.4 4.09L12 4.8L12.6 4.09C13.65 2.81 15.24 2 17 2C20.04 2 22.5 4.46 22.5 7.5C22.5 13.5 12 21 12 21Z"></path>
+                                </svg>
+                                <span class="relative z-10 text-[11px] md:text-[12px] font-bold" style="color: rgb(51, 51, 51);">17</span>
+                              </div>
+                            </div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">18</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">19</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">20</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">21</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">22</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">23</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">24</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">25</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">26</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">27</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">28</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">29</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">30</span></div>
+                            <div class="flex items-center justify-center h-[30px] md:h-[34px]"><span class="text-[12px] md:text-[13px]">31</span></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <a id="add-to-calendar-link" href="#" class="mt-4 inline-flex items-center justify-center text-[14px] underline underline-offset-4" data-showcase-join-prev="" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; background: none;">
+                        <span dir="auto">Add to Calendar</span>
+                      </a>
+                    </div>
+                  </div>
+                  <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px] mt-2 md:mt-4" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                </section>
+
+                <!-- Countdown Section -->
+                <section id="countdown-section" class="relative isolate flex w-full flex-col items-center py-4 md:py-6" data-landing-screenshot-id="invite-countdown">
+                  <div class="relative z-10 flex w-full max-w-[380px] flex-col items-center gap-[12px] px-5 text-center md:max-w-[520px] md:px-8">
+                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px]" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 700;">
+                      <span dir="auto">COUNTDOWN</span>
+                    </h2>
+                    <img alt="" aria-hidden="true" class="pointer-events-none mb-1 block h-auto w-[143px] max-w-none object-contain md:w-[180px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line2-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                    <p id="countdown-subtitle" class="text-[12px] md:text-[14px] uppercase tracking-[0.14em]" style="color: rgb(255, 239, 214); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                      <span dir="auto">Counting down to our big day</span>
+                    </p>
+
+                    <div class="mt-2 grid w-full grid-cols-4 gap-2.5 sm:gap-3.5 md:gap-4">
+                      <div class="flex flex-col items-center justify-center rounded-lg px-2 py-3 md:py-4" style="background-color: rgba(15, 47, 87, 0.58); border: 1px solid rgba(255, 223, 175, 0.32); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 223, 175, 0.12);">
+                        <span id="cd-days" class="text-[28px] sm:text-[32px] md:text-[40px] leading-none tabular-nums" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">00</span>
+                        <span class="mt-1.5 text-[9px] md:text-[11px] uppercase tracking-[0.14em]" style="color: rgba(255, 239, 214, 0.85); font-family: Uchen, Baskerville, ChungDoiIndic, serif;">Days</span>
+                      </div>
+                      <div class="flex flex-col items-center justify-center rounded-lg px-2 py-3 md:py-4" style="background-color: rgba(15, 47, 87, 0.58); border: 1px solid rgba(255, 223, 175, 0.32); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 223, 175, 0.12);">
+                        <span id="cd-hours" class="text-[28px] sm:text-[32px] md:text-[40px] leading-none tabular-nums" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">00</span>
+                        <span class="mt-1.5 text-[9px] md:text-[11px] uppercase tracking-[0.14em]" style="color: rgba(255, 239, 214, 0.85); font-family: Uchen, Baskerville, ChungDoiIndic, serif;">Hours</span>
+                      </div>
+                      <div class="flex flex-col items-center justify-center rounded-lg px-2 py-3 md:py-4" style="background-color: rgba(15, 47, 87, 0.58); border: 1px solid rgba(255, 223, 175, 0.32); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 223, 175, 0.12);">
+                        <span id="cd-minutes" class="text-[28px] sm:text-[32px] md:text-[40px] leading-none tabular-nums" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">00</span>
+                        <span class="mt-1.5 text-[9px] md:text-[11px] uppercase tracking-[0.14em]" style="color: rgba(255, 239, 214, 0.85); font-family: Uchen, Baskerville, ChungDoiIndic, serif;">Minutes</span>
+                      </div>
+                      <div class="flex flex-col items-center justify-center rounded-lg px-2 py-3 md:py-4" style="background-color: rgba(15, 47, 87, 0.58); border: 1px solid rgba(255, 223, 175, 0.32); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 223, 175, 0.12);">
+                        <span id="cd-seconds" class="text-[28px] sm:text-[32px] md:text-[40px] leading-none tabular-nums" style="color: rgb(255, 223, 175); font-family: Baskerville, &quot;Libre Baskerville&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif;">00</span>
+                        <span class="mt-1.5 text-[9px] md:text-[11px] uppercase tracking-[0.14em]" style="color: rgba(255, 239, 214, 0.85); font-family: Uchen, Baskerville, ChungDoiIndic, serif;">Seconds</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Moments of Love Section -->
+                <section id="moments-section" class="relative isolate flex w-full flex-col items-center py-6 md:py-10" data-landing-screenshot-id="invite-moments">
+                  <!-- Top Crest Divider -->
+                  <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+
+                  <!-- Corner Florals -->
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" style="left: -13.5%; top: 4px; width: 34%; max-width: 190px; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1); opacity: 0.9;" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower3-decoration.webp" style="right: -13.5%; top: 4px; width: 34%; max-width: 190px; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); opacity: 0.9;" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" style="left: -11%; bottom: 4px; width: 32%; max-width: 180px; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); opacity: 0.9;" />
+                  <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower4-decoration.webp" style="right: -11%; bottom: 4px; width: 32%; max-width: 180px; aspect-ratio: 1 / 1; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1); opacity: 0.9;" />
+
+                  <div class="relative z-10 flex w-full max-w-[420px] flex-col items-center px-4 pt-8 pb-6 text-center md:max-w-[580px] md:pt-10 md:pb-8">
+                    <!-- Cherished Memories Pill -->
+                    <div class="inline-flex items-center justify-center rounded-full px-4 py-1 text-[9px] md:text-[10px] uppercase tracking-[0.22em]" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 223, 175, 0.22); color: rgba(255, 239, 214, 0.82); font-family: Montserrat, Roboto, sans-serif;">
+                      <span dir="auto">CHERISHED MEMORIES</span>
+                    </div>
+
+                    <!-- Heading -->
+                    <h2 class="mt-3 uppercase text-center text-[24px] md:text-[32px] tracking-[0.14em]" style="color: rgb(255, 223, 175); font-family: &quot;Playfair Display&quot;, &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 500;">
+                      <span dir="auto">MOMENTS OF LOVE</span>
+                    </h2>
+
+                    <!-- Subtitle -->
+                    <p class="mt-2 italic text-[13px] md:text-[15px]" style="color: rgba(255, 239, 214, 0.8); font-family: Lora, &quot;EB Garamond&quot;, &quot;Times New Roman&quot;, serif;">
+                      <span dir="auto">A glimpse into our laughter and happiness</span>
+                    </p>
+
+                    <!-- 3-Photo Coverflow Carousel -->
+                    <div id="moments-carousel" class="relative mt-6 w-full max-w-[340px] md:max-w-[440px]">
+                      <div class="moments-stage">
+                        <div class="moments-card is-center" data-moment-index="0">
+                          <img src="images/moments/moment-1.jpg" alt="Subin and Rosmy moment 1" loading="lazy" />
+                        </div>
+                        <div class="moments-card is-right" data-moment-index="1">
+                          <img src="images/moments/moment-2.jpg" alt="Subin and Rosmy moment 2" loading="lazy" />
+                        </div>
+                        <div class="moments-card is-left" data-moment-index="2">
+                          <img src="images/moments/moment-3.jpg" alt="Subin and Rosmy moment 3" loading="lazy" />
+                        </div>
+                      </div>
+
+                      <!-- Prev / Next Arrow Buttons -->
+                      <button id="moments-prev-btn" type="button" aria-label="Previous photo" class="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-30 flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full transition-all hover:scale-105" style="background-color: rgba(0, 13, 29, 0.68); border: 1px solid rgba(255, 223, 175, 0.35); color: rgb(255, 239, 214);">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                      </button>
+                      <button id="moments-next-btn" type="button" aria-label="Next photo" class="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-30 flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full transition-all hover:scale-105" style="background-color: rgba(0, 13, 29, 0.68); border: 1px solid rgba(255, 223, 175, 0.35); color: rgb(255, 239, 214);">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                      </button>
+
+                      <!-- Pagination Dots -->
+                      <div class="mt-4 flex items-center justify-center gap-2">
+                        <button type="button" class="moments-dot is-active" data-dot-index="0" aria-label="Show photo 1"></button>
+                        <button type="button" class="moments-dot" data-dot-index="1" aria-label="Show photo 2"></button>
+                        <button type="button" class="moments-dot" data-dot-index="2" aria-label="Show photo 3"></button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Bottom Crest Divider -->
+                  <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px] mt-2" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+                </section>
+
+                <!-- RSVP CTA -->
+                <div class="relative z-10 flex w-full flex-col items-center justify-center" data-landing-screenshot-id="invite-rsvp">
+                  <button id="rsvp-open-btn" type="button" class="inline-flex items-center justify-center rounded-full px-8 py-1.5 text-[13px] transition-transform hover:scale-[1.03]" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif;">
+                    <span class="relative z-10 flex min-h-0 items-center justify-center gap-2">
+                      <span dir="auto">CONFIRM ATTENDANCE</span>
+                    </span>
+                  </button>
+                </div>
+
+                <!-- Guestbook Section -->
+                <section class="relative z-10 w-full px-6 [&amp;_form]:max-w-[248px] md:[&amp;_form]:max-w-[380px]" data-landing-screenshot-id="invite-guestbook" data-showcase-keep="" style="color: rgb(255, 239, 214); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                  <div class="text-center">
+                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px] mb-5" style="color: rgb(255, 223, 175); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif; font-weight: 700;">
+                      <span dir="auto">Guestbook</span>
+                    </h2>
+                  </div>
+
+                  <form id="guestbook-form" class="mt-6 mx-auto w-full max-w-full md:max-w-[600px]">
+                    <div class="p-0" style="background: transparent;">
+                      <div class="mb-4">
+                        <input id="guestbook-name" placeholder="Enter your name*" class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" maxlength="500" required type="text" value="" style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif; border-radius: 6px;" />
+                      </div>
+                      <textarea id="guestbook-wishes" placeholder="Enter your wishes*" class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" rows="4" maxlength="10000" required style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif; border-radius: 6px; resize: none;"></textarea>
+                      <div class="mt-4 flex items-center justify-between text-xs">
+                        <div class="flex items-center text-xs space-x-1">
+                          <button id="ai-wish-btn" type="button" class="p-2 rounded-lg transition-all duration-200 hover:scale-110 text-base leading-none" title="Generate wish with AI" style="background-color: rgba(255, 223, 175, 0.1); color: rgb(255, 223, 175);">🪄</button>
+                        </div>
+                        <button type="submit" class="rounded-full px-6 py-2 text-sm font-semibold text-white transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Times New Roman&quot;, ChungDoiIndic, serif;">
+                          <span dir="auto">SEND WISHES</span>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <div id="wishes-list" class="mt-8 w-full space-y-3 overflow-y-auto pr-2 mx-auto max-w-full md:max-w-[600px]">
+                    <p class="text-center text-sm opacity-70 flex flex-col items-center">
+                      <span dir="auto">No wishes yet. Be the first!</span>
+                    </p>
+                  </div>
+                </section>
+
+                <!-- Footer Text & Referral -->
+                <span class="whitespace-pre-line flex flex-col items-center gap-1 px-6 text-center text-[11px] md:text-[13px] pt-1 mx-auto md:max-w-[560px]" style="color: rgb(255, 223, 175); font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, ChungDoiIndic, sans-serif;">
+                  <span dir="auto">Your presence would be the greatest gift we could receive!</span>
+                </span>
+                <div class="flex items-center justify-center">
+                  <a href="https://chungdoi.com?utm_source=invitation&amp;utm_medium=referral&amp;utm_campaign=wedding_subinsojan-rosmydavis-dearest" target="_blank" rel="noopener noreferrer" class="text-xs opacity-50 hover:opacity-70 transition-opacity" style="color: rgb(255, 239, 214);">♡ chungdoi.com</a>
+                </div>
+              </div>
+
+              <!-- Bottom Crest Decoration -->
+              <div class="pointer-events-none relative bottom-[-45px] z-[1] flex w-full justify-center">
+                <img alt="" aria-hidden="true" class="block h-auto w-[167%] max-w-none shrink-0 object-contain" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- RSVP Modal -->
+  <div id="rsvp-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 transition-all duration-300 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[85vh] relative overflow-hidden transition-all duration-300 scale-100 opacity-100">
+      <div class="relative px-6 pt-6 pb-4">
+        <button id="rsvp-close-btn" type="button" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors" aria-label="Close">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="px-6 pb-6 overflow-y-auto max-h-[calc(85vh-72px)]">
+        <div data-showcase-keep="" class="">
+          <h2 class="text-xl font-semibold text-gray-900 mb-1"><span dir="auto">Confirm your attendance</span></h2>
+          <div class="text-sm text-gray-500 mb-6"><span dir="auto">Your presence would be an honor. Please RSVP so we can prepare the warmest welcome for you.</span></div>
+          <form id="rsvp-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"><span dir="auto">Your name</span></label>
+              <input id="rsvp-name" required placeholder="Enter your name" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow placeholder:text-gray-400 bg-white text-gray-900" type="text" value="" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"><span dir="auto">Will you attend?</span></label>
+              <div class="space-y-2">
+                <label id="rsvp-opt-yes" class="flex items-center gap-3 py-2.5 px-3 rounded-xl border-2 cursor-pointer transition-all duration-200 border-gray-100 bg-gray-50/50 hover:border-gray-200 hover:bg-gray-50">
+                  <input class="sr-only" type="radio" name="attending" value="yes" />
+                  <div class="rsvp-icon-wrap w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-gray-200">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <span class="rsvp-label-text text-sm font-medium text-gray-700"><span dir="auto">I will attend</span></span>
+                </label>
+                <label id="rsvp-opt-no" class="flex items-center gap-3 py-2.5 px-3 rounded-xl border-2 cursor-pointer transition-all duration-200 border-gray-100 bg-gray-50/50 hover:border-gray-200 hover:bg-gray-50">
+                  <input class="sr-only" type="radio" name="attending" value="no" />
+                  <div class="rsvp-icon-wrap w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-gray-200">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </div>
+                  <span class="rsvp-label-text text-sm font-medium text-gray-700"><span dir="auto">Sorry, I can't make it</span></span>
+                </label>
+              </div>
+            </div>
+
+            <div id="rsvp-guests-wrap" class="hidden animate-in fade-in slide-in-from-top-2 duration-200 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                <label class="min-w-0 flex-1 basis-28 text-sm font-medium text-gray-700"><span dir="auto">Number of guests (including you)</span></label>
+                <div class="ms-auto flex shrink-0 items-center gap-2.5">
+                  <button id="guests-dec-btn" type="button" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                  </button>
+                  <span id="guests-count-val" class="w-8 text-center text-lg font-semibold text-gray-900">1</span>
+                  <button id="guests-inc-btn" type="button" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="rsvp-msg-wrap" class="hidden animate-in fade-in slide-in-from-top-2 duration-200 space-y-1.5">
+              <label class="block text-sm font-medium text-gray-700"><span dir="auto">Message to the couple</span></label>
+              <textarea id="rsvp-message" rows="3" maxlength="1000" placeholder="Leave a note (optional)" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-base sm:text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow placeholder:text-gray-400 resize-none"></textarea>
+            </div>
+
+            <button id="rsvp-submit-btn" type="submit" disabled class="w-full py-3.5 text-sm font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px -2px;">
+              <span dir="auto">Confirm</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested Wishes Modal -->
+  <div id="wishes-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 transition-all duration-300 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[85vh] relative overflow-hidden transition-all duration-300 scale-100 opacity-100 overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold text-gray-900">✨ Suggested wishes for you</h3>
+          <button id="wishes-close-x" type="button" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Close">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">Choose a wish you like or regenerate for more suggestions</p>
+        <div id="suggested-wishes-list" class="space-y-3 mb-4"></div>
+        <div class="flex gap-2">
+          <button id="wishes-regenerate-btn" type="button" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">✨ Generate more</button>
+          <button id="wishes-close-btn" type="button" class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toaster" data-rht-toaster="" style="position:fixed;z-index:99999;top:16px;left:16px;right:16px;bottom:16px;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
