@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Personalized Invite | Subin Sojan &amp; Rosmy Davis</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#001a3a" />
+
+  <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="../icon-v2.png" />
+
+  <link rel="preload" as="font" href="../fonts/ViaodaLibre-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="../fonts/TheNautigal-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="../fonts/Lora-Regular.ttf" type="font/ttf" crossorigin />
+  <link rel="preload" as="font" href="../fonts/PlayfairDisplay-Variable.ttf" type="font/ttf" crossorigin />
+
+  <link rel="stylesheet" href="../css/1e0309f8c26cc0c7.css" />
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(ellipse at top, #0f2f57 0%, #001a3a 55%, #000d1d 100%);
+      color: #ffefd6;
+      font-family: "Lora", "EB Garamond", serif;
+    }
+    .invite-shell {
+      background:
+        linear-gradient(rgba(10, 32, 62, 0.72), rgba(10, 32, 62, 0.78)),
+        url("../images/themes/baroque-v2-dark-blue/bg.webp") 50% 0 / 100% auto repeat,
+        #0f2f57;
+      border: 1px solid rgba(255, 223, 175, 0.22);
+      box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.55), 0 0 40px rgba(255, 223, 175, 0.08);
+    }
+    .preview-card {
+      background:
+        linear-gradient(rgba(15, 47, 87, 0.65), rgba(15, 47, 87, 0.65)),
+        url("../images/themes/baroque-v2-dark-blue/bg.webp") 50% 0 / 100% auto repeat,
+        #0f2f57;
+      border: 1px solid rgba(255, 223, 175, 0.2);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 223, 175, 0.12);
+    }
+    #guest-name-input::placeholder {
+      color: rgba(255, 239, 214, 0.45);
+    }
+    #guest-name-input:focus {
+      outline: none;
+      border-color: #ffdfaf;
+      box-shadow: 0 0 0 3px rgba(255, 223, 175, 0.16);
+    }
+  </style>
+</head>
+<body class="flex min-h-screen items-center justify-center px-4 py-8">
+  <main class="w-full max-w-[520px]">
+    <div class="invite-shell relative overflow-hidden rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
+      <!-- Subtle Corner Florals -->
+      <img src="../images/themes/baroque-v2-dark-blue/flower3-decoration.webp" alt="" aria-hidden="true" class="pointer-events-none absolute -scale-x-100" style="top: -18px; left: -18px; width: 105px; height: auto; opacity: 0.78;" />
+      <img src="../images/themes/baroque-v2-dark-blue/flower4-decoration.webp" alt="" aria-hidden="true" class="pointer-events-none absolute -scale-x-100" style="bottom: -18px; right: -18px; width: 105px; height: auto; opacity: 0.78;" />
+
+      <div class="relative z-10 flex flex-col items-center text-center">
+        <!-- Badge & Header -->
+        <span class="inline-flex items-center rounded-full px-3.5 py-1 text-[10px] uppercase tracking-[0.2em]" style="background-color: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 223, 175, 0.25); color: rgba(255, 239, 214, 0.85);">
+          Guest Invite Generator
+        </span>
+        <h1 class="mt-3 text-2xl sm:text-3xl leading-tight" style="color: #ffdfaf; font-family: &quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, serif;">
+          Subin Sojan <span style="font-family: &quot;The Nautigal&quot;, cursive; font-size: 1.25rem;">&amp;</span> Rosmy Davis
+        </h1>
+        <p class="mt-1.5 px-4 text-xs sm:text-sm" style="color: rgba(255, 239, 214, 0.78); max-width: 340px;">
+          Enter a guest or family name to create a personalized invitation link.
+        </p>
+
+        <!-- Guest Name Input -->
+        <div class="mt-6 w-full text-left">
+          <label for="guest-name-input" class="mb-2 block text-xs uppercase tracking-[0.14em]" style="color: #ffdfaf; font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
+            Guest Name
+          </label>
+          <div class="relative">
+            <input
+              id="guest-name-input"
+              type="text"
+              maxlength="120"
+              autocomplete="off"
+              placeholder="e.g. Rahul &amp; Family"
+              class="w-full rounded-xl px-4 py-3 pr-10 text-base sm:text-sm transition-all"
+              style="background-color: rgba(0, 13, 29, 0.55); border: 1px solid rgba(255, 223, 175, 0.35); color: #ffefd6; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;"
+            />
+            <button
+              id="clear-guest-btn"
+              type="button"
+              aria-label="Clear guest name"
+              class="hidden absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-xs transition-opacity hover:opacity-100 opacity-70"
+              style="color: #ffdfaf;"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Cover Card Preview -->
+        <div class="mt-6 w-full text-left">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="text-xs uppercase tracking-[0.14em]" style="color: #ffdfaf; font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
+              Live Card Preview
+            </span>
+            <a
+              id="preview-open-link"
+              href="../"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xs underline underline-offset-4 opacity-85 hover:opacity-100"
+              style="color: #ffdfaf;"
+            >
+              Test Invite ↗
+            </a>
+          </div>
+
+          <div class="preview-card relative overflow-hidden rounded-xl px-5 py-6 text-center">
+            <div class="text-xl leading-tight" style="color: #ffdfaf; font-family: &quot;Viaoda Libre&quot;, &quot;EB Garamond&quot;, serif;">
+              <div>Subin Sojan</div>
+              <div class="text-sm leading-none" style="font-family: &quot;The Nautigal&quot;, cursive;">&amp;</div>
+              <div>Rosmy Davis</div>
+            </div>
+
+            <div class="my-2.5 flex items-center justify-center gap-2.5">
+              <div class="h-px w-8" style="background: linear-gradient(to right, transparent, #ffdfaf);"></div>
+              <span class="text-xs" style="color: #ffdfaf; opacity: 0.7;">❦</span>
+              <div class="h-px w-8" style="background: linear-gradient(to left, transparent, #ffdfaf);"></div>
+            </div>
+
+            <p class="text-sm font-light" style="color: rgba(255, 239, 214, 0.85);">
+              Cordially Invites You
+            </p>
+            <p
+              id="preview-guest-name"
+              class="hidden mt-1.5 text-lg font-semibold tracking-wide"
+              style="color: #ffdfaf; font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif; text-shadow: 0 2px 10px rgba(255, 223, 175, 0.22);"
+            ></p>
+
+            <div
+              class="mx-auto mt-4 inline-flex items-center justify-center rounded-full px-6 py-1.5 text-xs font-semibold"
+              style="background-color: #ffdfaf; color: #511419; box-shadow: 0 4px 12px rgba(255, 223, 175, 0.3);"
+            >
+              Open
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated URL Readout -->
+        <div class="mt-5 w-full rounded-xl px-3.5 py-2.5 text-left" style="background-color: rgba(0, 13, 29, 0.55); border: 1px solid rgba(255, 223, 175, 0.22);">
+          <div class="text-[10px] uppercase tracking-[0.14em]" style="color: rgba(255, 239, 214, 0.65);">
+            Generated Link
+          </div>
+          <p id="generated-url-text" class="mt-1 break-all text-xs leading-relaxed" style="color: #ffdfaf; font-family: Roboto, sans-serif;">
+            https://subinsojan-rosmydavis-am7h.vercel.app/
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-5 grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+          <button
+            id="copy-link-btn"
+            type="button"
+            class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            style="background-color: #ffdfaf; color: #511419; box-shadow: 0 4px 14px rgba(255, 223, 175, 0.3); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;"
+          >
+            <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copy-link-label">Copy Link</span>
+          </button>
+
+          <a
+            id="whatsapp-share-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold no-underline transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            style="background-color: rgba(10, 32, 62, 0.78); border: 1px solid rgba(255, 223, 175, 0.45); color: #ffdfaf; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;"
+          >
+            <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.47 0 .1 5.36.1 11.96c0 2.1.55 4.16 1.6 5.97L0 24l6.23-1.63a11.9 11.9 0 0 0 5.83 1.49h.01c6.59 0 11.96-5.36 11.96-11.96 0-3.19-1.24-6.19-3.51-8.42zM12.07 21.85h-.01a9.87 9.87 0 0 1-5.04-1.38l-.36-.21-3.7.97.99-3.61-.24-.37a9.86 9.86 0 0 1-1.52-5.29c0-5.46 4.44-9.9 9.9-9.9 2.64 0 5.13 1.03 7 2.9a9.83 9.83 0 0 1 2.9 7c0 5.46-4.44 9.89-9.92 9.89zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.48-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.49 1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+            </svg>
+            <span>Share on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div id="invite-toaster" style="position:fixed;z-index:99999;top:16px;left:16px;right:16px;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;"></div>
+
+  <script>
+    (function () {
+      const PRODUCTION_ORIGIN = 'https://subinsojan-rosmydavis-am7h.vercel.app';
+      const isLocal =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.protocol === 'file:';
+      const shareOrigin = isLocal ? PRODUCTION_ORIGIN : window.location.origin;
+
+      const guestInput = document.getElementById('guest-name-input');
+      const clearBtn = document.getElementById('clear-guest-btn');
+      const previewGuestName = document.getElementById('preview-guest-name');
+      const generatedUrlText = document.getElementById('generated-url-text');
+      const previewOpenLink = document.getElementById('preview-open-link');
+      const copyLinkBtn = document.getElementById('copy-link-btn');
+      const copyLinkLabel = document.getElementById('copy-link-label');
+      const whatsappShareBtn = document.getElementById('whatsapp-share-btn');
+      const toaster = document.getElementById('invite-toaster');
+
+      let copyResetTimer = null;
+
+      function buildInviteUrl(guestName) {
+        if (!guestName) return shareOrigin + '/';
+        return shareOrigin + '/?to=' + encodeURIComponent(guestName);
+      }
+
+      function buildLocalTestUrl(guestName) {
+        if (!guestName) return '../';
+        return '../?to=' + encodeURIComponent(guestName);
+      }
+
+      function buildWhatsAppHref(guestName, inviteUrl) {
+        const greeting = guestName ? 'Dear ' + guestName + ',\n\n' : 'Dear Guest,\n\n';
+        const message =
+          greeting +
+          'With great joy, Subin Sojan & Rosmy Davis cordially invite you to celebrate their wedding on January 17, 2027 at St. Sebastian\'s Church, Rayarome.\n\n' +
+          'Open your personal invitation here:\n' +
+          inviteUrl;
+        return 'https://wa.me/?text=' + encodeURIComponent(message);
+      }
+
+      function showToast(text) {
+        const toast = document.createElement('div');
+        toast.className = 'bg-white text-gray-900 px-4 py-2 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 transition-all duration-300';
+        toast.style.pointerEvents = 'auto';
+        toast.innerHTML = '<span style="color:#10b981;">✓</span><span></span>';
+        toast.querySelector('span:last-child').textContent = text;
+        toaster.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-6px)';
+          setTimeout(() => toast.remove(), 300);
+        }, 2200);
+      }
+
+      function updateUI() {
+        const name = guestInput.value.trim();
+        const url = buildInviteUrl(name);
+
+        if (name) {
+          previewGuestName.textContent = name;
+          previewGuestName.classList.remove('hidden');
+          clearBtn.classList.remove('hidden');
+        } else {
+          previewGuestName.textContent = '';
+          previewGuestName.classList.add('hidden');
+          clearBtn.classList.add('hidden');
+        }
+
+        generatedUrlText.textContent = url;
+        previewOpenLink.href = buildLocalTestUrl(name);
+        whatsappShareBtn.href = buildWhatsAppHref(name, url);
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+
+      copyLinkBtn.addEventListener('click', function () {
+        const url = buildInviteUrl(guestInput.value.trim());
+        const onCopied = function () {
+          copyLinkLabel.textContent = 'Copied!';
+          showToast('Copied!');
+          if (copyResetTimer) clearTimeout(copyResetTimer);
+          copyResetTimer = setTimeout(() => {
+            copyLinkLabel.textContent = 'Copy Link';
+          }, 2000);
+        };
+
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(url).then(onCopied).catch(function () {
+            fallbackCopy(url);
+            onCopied();
+          });
+        } else {
+          fallbackCopy(url);
+          onCopied();
+        }
+      });
+
+      guestInput.addEventListener('input', updateUI);
+      clearBtn.addEventListener('click', function () {
+        guestInput.value = '';
+        updateUI();
+        guestInput.focus();
+      });
+
+      updateUI();
+    })();
+  </script>
+</body>
+</html>

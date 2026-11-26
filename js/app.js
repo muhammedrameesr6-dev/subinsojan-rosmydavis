@@ -30,6 +30,23 @@
   const openBtn = document.getElementById('open-invite-btn');
   const waxSealEl = document.getElementById('wax-seal');
   const sealFxEl = document.getElementById('seal-fx');
+  const coverGuestNameEl = document.getElementById('cover-guest-name');
+
+  // --- Dynamic Guest Name Personalization (?to=Guest+Name) ---
+  (function applyGuestPersonalization() {
+    if (!coverGuestNameEl) return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const guestName = (params.get('to') || '').trim();
+      if (guestName) {
+        coverGuestNameEl.textContent = guestName;
+        coverGuestNameEl.classList.remove('hidden');
+      } else {
+        coverGuestNameEl.textContent = '';
+        coverGuestNameEl.classList.add('hidden');
+      }
+    } catch (_) {}
+  })();
 
   const addToCalLink = document.getElementById('add-to-calendar-link');
 
