@@ -186,6 +186,17 @@
     .wedding-info-wrap {
       max-width: 440px;
     }
+    .ceremony-parents-wrap {
+      max-width: 390px;
+    }
+    .parent-name-text {
+      font-size: 14.5px;
+      line-height: 1.4;
+    }
+    .parent-addr-text {
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
     .location-cards-grid {
       max-width: 340px;
     }
@@ -197,6 +208,15 @@
     @media (min-width: 768px) {
       .wedding-info-wrap {
         max-width: 660px;
+      }
+      .ceremony-parents-wrap {
+        max-width: 600px;
+      }
+      .parent-name-text {
+        font-size: 18px;
+      }
+      .parent-addr-text {
+        font-size: 15px;
       }
       .location-cards-grid {
         max-width: 600px;
@@ -345,24 +365,20 @@
                   <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none top-[var(--orn-top)] md:top-[var(--orn-top-md)]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower5-decoration.webp" style="left: -18.2%; width: 31.9%; aspect-ratio: 132.44 / 339.52; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); --orn-top: 30.4%; --orn-top-md: 12%;" />
                   <img alt="" aria-hidden="true" class="pointer-events-none absolute z-[1] h-auto max-w-none top-[var(--orn-top)] md:top-[var(--orn-top-md)]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/flower5-decoration.webp" style="right: -18.2%; width: 31.9%; aspect-ratio: 132.44 / 339.52; filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px); transform: scaleX(-1); --orn-top: 30.4%; --orn-top-md: 12%;" />
 
-                  <div class="relative z-10 flex w-full max-w-[366px] flex-col items-center gap-6 px-5 pt-[42px] md:max-w-[520px] md:gap-8 md:px-8 md:pt-[52px]">
-                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px] tracking-[0.08em]" style="color: rgb(255, 223, 175); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif; font-weight: 600;">
-                      <span dir="auto">CEREMONY INFO</span>
-                    </h2>
-
-                    <div class="relative grid w-full grid-cols-[1fr_auto_1fr] grid-rows-[repeat(4,auto)] justify-center gap-x-[14px] gap-y-[3px] text-center" style="color: rgb(255, 223, 175); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
+                  <div class="ceremony-parents-wrap relative z-10 flex w-full flex-col items-center gap-6 px-6 pt-[30px] md:gap-8 md:px-10 md:pt-[38px]">
+                    <div class="relative grid w-full grid-cols-[1fr_auto_1fr] grid-rows-[repeat(4,auto)] justify-center gap-x-[12px] md:gap-x-[20px] gap-y-[4px] text-center" style="color: rgb(255, 223, 175); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
                       <div class="row-span-4 grid grid-rows-subgrid min-w-0 justify-items-center">
-                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Sojan John</span></span>
-                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sophy Sojan</span></span>
-                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Mylakkkattu house</span></span>
-                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Rayarome, Alakode, Kannur</span></span>
+                        <span class="parent-name-text font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Sojan John</span></span>
+                        <span class="parent-name-text font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sophy Sojan</span></span>
+                        <span class="parent-addr-text [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Mylakkkattu house</span></span>
+                        <span class="parent-addr-text [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Rayarome, Alakode, Kannur</span></span>
                       </div>
-                      <img alt="" aria-hidden="true" class="row-span-4 block h-[84px] w-auto max-w-none shrink-0 self-center object-contain md:h-[104px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line3-decoration.webp" />
+                      <img alt="" aria-hidden="true" class="row-span-4 block h-[104px] w-auto max-w-none shrink-0 self-center object-contain md:h-[124px]" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/line3-decoration.webp" />
                       <div class="row-span-4 grid grid-rows-subgrid min-w-0 justify-items-center">
-                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Davis P.V</span></span>
-                        <span class="text-[12px] md:text-[14px] font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sindhu Davis</span></span>
-                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Payyappilly house</span></span>
-                        <span class="text-[11px] md:text-[13px] [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Kallur, Annamanada, Thrissur</span></span>
+                        <span class="parent-name-text font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mr. Davis P.V</span></span>
+                        <span class="parent-name-text font-semibold [overflow-wrap:anywhere]" style="color: rgb(255, 223, 175);"><span dir="auto">Mrs. Sindhu Davis</span></span>
+                        <span class="parent-addr-text [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Payyappilly house</span></span>
+                        <span class="parent-addr-text [overflow-wrap:anywhere]" style="color: rgb(255, 239, 214);"><span dir="auto">Kallur, Annamanada, Thrissur</span></span>
                       </div>
                     </div>
 
