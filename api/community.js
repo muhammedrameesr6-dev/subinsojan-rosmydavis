@@ -1,5 +1,43 @@
 const STORAGE_KEY = 'wedding_subin_rosmy_community';
 const MAX_ITEMS = 500;
+const DEFAULT_GOOGLE_SHEET_URL = '';
+
+function getGoogleSheetUrl() {
+  const url = String(process.env.GOOGLE_SHEET_URL || DEFAULT_GOOGLE_SHEET_URL || '').trim();
+  return url || null;
+}
+
+async function fetchGoogleSheetGet(sheetUrl) {
+  const res = await fetch(sheetUrl, { redirect: 'follow' });
+  if (!res.ok) {
+    throw new Error(`Google Sheet GET failed: ${res.status}`);
+  }
+  const data = await res.json();
+  return {
+    wishes: Array.isArray(data.wishes) ? data.wishes.slice(0, MAX_ITEMS) : [],
+    rsvps: Array.isArray(data.rsvps) ? data.rsvps.slice(0, MAX_ITEMS) : [],
+  };
+}
+
+async function postGoogleSheetEntry(sheetUrl, payload) {
+  const res = await fetch(sheetUrl, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error(`Google Sheet POST failed: ${res.status}`);
+  }
+  const data = await res.json();
+  if (data && data.ok === false) {
+    throw new Error(data.error || 'Google Sheet rejected submission');
+  }
+  return {
+    wishes: Array.isArray(data.wishes) ? data.wishes.slice(0, MAX_ITEMS) : [],
+    rsvps: Array.isArray(data.rsvps) ? data.rsvps.slice(0, MAX_ITEMS) : [],
+  };
+}
 
 function getRedisConfig() {
   let url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
@@ -69,14 +107,16 @@ function cleanText(value, maxLen) {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
+  const sheetUrl = getGoogleSheetUrl();
   const cfg = getRedisConfig();
+  const isConfigured = Boolean(sheetUrl || cfg);
 
   if (req.method === 'GET') {
-    if (!cfg) {
+    if (!isConfigured) {
       return res.status(200).json({ configured: false, wishes: [], rsvps: [] });
     }
     try {
-      const data = await readCommunityData(cfg);
+      const data = sheetUrl ? await fetchGoogleSheetGet(sheetUrl) : await readCommunityData(cfg);
       return res.status(200).json({ configured: true, wishes: data.wishes, rsvps: data.rsvps });
     } catch (err) {
       return res.status(500).json({ configured: true, error: 'Failed to load community data' });
@@ -103,30 +143,42 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Name is required' });
     }
 
-    if (!cfg) {
+    if (!isConfigured) {
       return res.status(200).json({ ok: true, configured: false });
     }
 
-    try {
-      const data = await readCommunityData(cfg);
-      const createdAt = new Date().toISOString();
-
-      if (kind === 'wish') {
-        const message = cleanText(raw.message, 5000);
-        if (!message) {
-          return res.status(400).json({ error: 'Message is required' });
-        }
-        data.wishes.unshift({ name, message, createdAt });
-      } else if (kind === 'rsvp') {
-        const attending = Boolean(raw.attending);
-        const guests = attending ? Math.max(1, Math.min(20, parseInt(raw.guests, 10) || 1)) : 0;
-        const message = cleanText(raw.message, 1000);
-        data.rsvps.unshift({ name, attending, guests, message, createdAt });
-      } else {
-        return res.status(400).json({ error: 'Invalid kind' });
+    const createdAt = cleanText(raw.createdAt, 64) || new Date().toISOString();
+    let normalizedEntry;
+    if (kind === 'wish') {
+      const message = cleanText(raw.message, 5000);
+      if (!message) {
+        return res.status(400).json({ error: 'Message is required' });
       }
+      normalizedEntry = { name, message, createdAt };
+    } else if (kind === 'rsvp') {
+      const attending = Boolean(raw.attending);
+      const guests = attending ? Math.max(1, Math.min(20, parseInt(raw.guests, 10) || 1)) : 0;
+      const message = cleanText(raw.message, 1000);
+      normalizedEntry = { name, attending, guests, message, createdAt };
+    } else {
+      return res.status(400).json({ error: 'Invalid kind' });
+    }
 
-      await writeCommunityData(cfg, data);
+    try {
+      let data;
+      if (sheetUrl) {
+        data = await postGoogleSheetEntry(sheetUrl, { kind, entry: normalizedEntry });
+      } else {
+        data = await readCommunityData(cfg);
+        if (kind === 'wish') {
+          const exists = data.wishes.some((w) => w.name === normalizedEntry.name && w.createdAt === normalizedEntry.createdAt);
+          if (!exists) data.wishes.unshift(normalizedEntry);
+        } else {
+          const exists = data.rsvps.some((r) => r.name === normalizedEntry.name && r.createdAt === normalizedEntry.createdAt);
+          if (!exists) data.rsvps.unshift(normalizedEntry);
+        }
+        await writeCommunityData(cfg, data);
+      }
       return res.status(200).json({ ok: true, configured: true, wishes: data.wishes, rsvps: data.rsvps });
     } catch (err) {
       return res.status(500).json({ ok: false, configured: true, error: 'Failed to save entry' });

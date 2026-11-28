@@ -292,17 +292,24 @@
   const rsvpListEl = document.getElementById('rsvp-list');
   const rsvpSummaryTitle = document.getElementById('rsvp-summary-title');
 
+  const SYNCED_KEYS_STORAGE_KEY = 'wedding_subin_rosmy_synced_keys';
   let remoteConfigured = false;
   let remoteWishes = null;
   let remoteRsvps = null;
+  let backfillStarted = false;
 
-  function loadRsvps() {
-    if (remoteConfigured && Array.isArray(remoteRsvps)) return remoteRsvps;
+  function readLocalArray(storageKey) {
     try {
-      return JSON.parse(localStorage.getItem(RSVP_STORAGE_KEY) || '[]');
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
     } catch (_) {
       return [];
     }
+  }
+
+  function loadRsvps() {
+    if (remoteConfigured && Array.isArray(remoteRsvps)) return remoteRsvps;
+    return readLocalArray(RSVP_STORAGE_KEY);
   }
 
   function saveLocalRsvps(list) {
@@ -406,16 +413,39 @@
   // --- Guestbook & Suggested Wishes ---
   function loadWishes() {
     if (remoteConfigured && Array.isArray(remoteWishes)) return remoteWishes;
-    try {
-      return JSON.parse(localStorage.getItem(WISHES_STORAGE_KEY) || '[]');
-    } catch (_) {
-      return [];
-    }
+    return readLocalArray(WISHES_STORAGE_KEY);
   }
 
   function saveLocalWishes(list) {
     try {
       localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(list));
+    } catch (_) {}
+  }
+
+  function entrySignature(kind, item) {
+    if (!item || typeof item !== 'object') return '';
+    const base = kind + '|' + String(item.name || '').trim().toLowerCase() + '|' + String(item.message || '').trim().toLowerCase();
+    if (kind === 'rsvp') {
+      return base + '|' + Boolean(item.attending) + '|' + (parseInt(item.guests, 10) || 0);
+    }
+    return base;
+  }
+
+  function readSyncedMap() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(SYNCED_KEYS_STORAGE_KEY) || '{}');
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function markSyncedSignature(sig) {
+    if (!sig) return;
+    try {
+      const map = readSyncedMap();
+      map[sig] = 1;
+      localStorage.setItem(SYNCED_KEYS_STORAGE_KEY, JSON.stringify(map));
     } catch (_) {}
   }
 
@@ -445,33 +475,110 @@
     });
   }
 
+  function uploadEntryRequest(kind, entry) {
+    return fetch(COMMUNITY_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: kind, entry: entry })
+    }).then((res) => (res.ok ? res.json() : null));
+  }
+
+  function syncUnsyncedLocalEntries(serverWishes, serverRsvps) {
+    if (backfillStarted) return Promise.resolve(false);
+    backfillStarted = true;
+
+    const syncedMap = readSyncedMap();
+    const remoteSet = {};
+    serverWishes.forEach((w) => {
+      remoteSet[entrySignature('wish', w)] = true;
+    });
+    serverRsvps.forEach((r) => {
+      remoteSet[entrySignature('rsvp', r)] = true;
+    });
+
+    const queue = [];
+    const localWishes = readLocalArray(WISHES_STORAGE_KEY).slice().reverse();
+    localWishes.forEach((w) => {
+      const sig = entrySignature('wish', w);
+      if (w && w.name && w.message && !remoteSet[sig] && !syncedMap[sig]) {
+        remoteSet[sig] = true;
+        queue.push({ kind: 'wish', entry: w, sig: sig });
+      }
+    });
+
+    const localRsvps = readLocalArray(RSVP_STORAGE_KEY).slice().reverse();
+    localRsvps.forEach((r) => {
+      const sig = entrySignature('rsvp', r);
+      if (r && r.name && !remoteSet[sig] && !syncedMap[sig]) {
+        remoteSet[sig] = true;
+        queue.push({ kind: 'rsvp', entry: r, sig: sig });
+      }
+    });
+
+    if (!queue.length) return Promise.resolve(false);
+
+    let chain = Promise.resolve(null);
+    queue.forEach((item) => {
+      chain = chain.then(() =>
+        uploadEntryRequest(item.kind, item.entry)
+          .then((resp) => {
+            if (resp && resp.configured && resp.ok) {
+              markSyncedSignature(item.sig);
+            }
+            return resp;
+          })
+          .catch(() => null)
+      );
+    });
+
+    return chain.then((lastResp) => {
+      if (lastResp && lastResp.configured && lastResp.ok) {
+        if (Array.isArray(lastResp.wishes)) {
+          remoteWishes = lastResp.wishes;
+          saveLocalWishes(remoteWishes);
+        }
+        if (Array.isArray(lastResp.rsvps)) {
+          remoteRsvps = lastResp.rsvps;
+          saveLocalRsvps(remoteRsvps);
+        }
+        renderWishes();
+        renderRsvps();
+        return true;
+      }
+      return false;
+    });
+  }
+
   function fetchCommunityData() {
     fetch(COMMUNITY_API_URL, { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data && data.configured) {
-          remoteConfigured = true;
-          remoteWishes = Array.isArray(data.wishes) ? data.wishes : [];
-          remoteRsvps = Array.isArray(data.rsvps) ? data.rsvps : [];
-          saveLocalWishes(remoteWishes);
-          saveLocalRsvps(remoteRsvps);
-          renderWishes();
-          renderRsvps();
+          const nextWishes = Array.isArray(data.wishes) ? data.wishes : [];
+          const nextRsvps = Array.isArray(data.rsvps) ? data.rsvps : [];
+          syncUnsyncedLocalEntries(nextWishes, nextRsvps).then((didBackfill) => {
+            remoteConfigured = true;
+            if (!didBackfill) {
+              remoteWishes = nextWishes;
+              remoteRsvps = nextRsvps;
+              saveLocalWishes(remoteWishes);
+              saveLocalRsvps(remoteRsvps);
+              renderWishes();
+              renderRsvps();
+            }
+          });
         }
       })
       .catch(() => {});
   }
 
   function postCommunityEntry(kind, entry) {
-    fetch(COMMUNITY_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kind: kind, entry: entry })
-    })
-      .then((res) => (res.ok ? res.json() : null))
+    const sig = entrySignature(kind, entry);
+    uploadEntryRequest(kind, entry)
       .then((data) => {
         if (data && data.configured && data.ok) {
           remoteConfigured = true;
+          markSyncedSignature(sig);
           if (Array.isArray(data.wishes)) {
             remoteWishes = data.wishes;
             saveLocalWishes(remoteWishes);
