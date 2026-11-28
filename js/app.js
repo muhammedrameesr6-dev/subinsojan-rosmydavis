@@ -2,7 +2,6 @@
   const WISHES_STORAGE_KEY = 'chungdoi_clone_wishes_subin_rosmy';
   const RSVP_STORAGE_KEY = 'chungdoi_clone_rsvp_subin_rosmy';
   const COMMUNITY_API_URL = '/api/community';
-  const RSVP_WHATSAPP_NUMBER = '916238629637';
 
   const WISH_BATCHES = [
     [
@@ -412,27 +411,6 @@
     renderCommunity();
   }
 
-  const rsvpSendWaCheckbox = document.getElementById('rsvp-send-wa');
-  const rsvpWaBanner = document.getElementById('rsvp-wa-banner');
-  const rsvpWaLink = document.getElementById('rsvp-wa-link');
-
-  function buildRsvpWhatsAppUrl(name, choice, count, message) {
-    const lines = [
-      'Wedding RSVP & Wishes - Subin Sojan & Rosmy Davis',
-      '',
-      'Name: ' + name
-    ];
-    if (choice === 'yes') {
-      lines.push('Attendance: Attending (' + count + (count === 1 ? ' Guest)' : ' Guests)'));
-    } else if (choice === 'no') {
-      lines.push("Attendance: Can't Make It");
-    }
-    if (message) {
-      lines.push('Wishes: ' + message);
-    }
-    return 'https://wa.me/' + RSVP_WHATSAPP_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
-  }
-
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -445,10 +423,7 @@
         return;
       }
 
-      const sendViaWhatsApp = rsvpSendWaCheckbox ? rsvpSendWaCheckbox.checked : true;
-      const waUrl = buildRsvpWhatsAppUrl(name, attendingChoice, guestCount, message);
       const createdAt = new Date().toISOString();
-
       if (attendingChoice) {
         const entry = {
           name: name,
@@ -477,18 +452,6 @@
         renderCommunity();
         postCommunityEntry('wish', entry);
         showToast('Your wishes have been sent!');
-      }
-
-      if (rsvpWaLink) {
-        rsvpWaLink.href = waUrl;
-      }
-      if (rsvpWaBanner) {
-        rsvpWaBanner.classList.remove('hidden');
-      }
-      if (sendViaWhatsApp) {
-        try {
-          window.open(waUrl, '_blank', 'noopener,noreferrer');
-        } catch (_) {}
       }
 
       rsvpForm.reset();
