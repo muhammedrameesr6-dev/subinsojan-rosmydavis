@@ -647,51 +647,72 @@ THE WEDDING OF OUR CHILDREN</span>
                   <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px] mt-2" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
                 </section>
 
-                <!-- RSVP CTA & Live Attendance List -->
-                <div class="relative z-10 flex w-full flex-col items-center justify-center px-6" data-landing-screenshot-id="invite-rsvp" style="font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
-                  <button id="rsvp-open-btn" type="button" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-[13px] font-semibold tracking-[0.06em] transition-transform hover:scale-[1.03]" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
-                    <span class="relative z-10 flex min-h-0 items-center justify-center gap-2">
-                      <span dir="auto">CONFIRM ATTENDANCE</span>
-                    </span>
-                  </button>
-
-                  <div id="rsvp-list-wrap" class="mt-6 hidden w-full max-w-[340px] md:max-w-[460px]">
-                    <p id="rsvp-summary-title" class="mb-3 text-center text-xs uppercase tracking-[0.14em]" style="color: rgba(255, 223, 175, 0.9); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
-                      Guest Responses
-                    </p>
-                    <div id="rsvp-list" class="max-h-[260px] w-full space-y-2.5 overflow-y-auto pr-1"></div>
-                  </div>
-                </div>
-
-                <!-- Guestbook Section -->
-                <section class="relative z-10 w-full px-6 [&amp;_form]:max-w-[248px] md:[&amp;_form]:max-w-[380px]" data-landing-screenshot-id="invite-guestbook" data-showcase-keep="" style="color: rgb(255, 239, 214); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
+                <!-- Unified RSVP & Blessings Section -->
+                <section class="relative z-10 w-full px-6 [&amp;_form]:max-w-[280px] md:[&amp;_form]:max-w-[420px]" data-landing-screenshot-id="invite-rsvp-guestbook" data-showcase-keep="" style="color: rgb(255, 239, 214); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
                   <div class="text-center">
-                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px] tracking-[0.08em] mb-5" style="color: rgb(255, 223, 175); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif; font-weight: 600;">
-                      <span dir="auto">Guestbook</span>
+                    <h2 class="uppercase text-center relative z-10 text-[20px] md:text-[24px] tracking-[0.08em] mb-2" style="color: rgb(255, 223, 175); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif; font-weight: 600;">
+                      <span dir="auto">RSVP &amp; Wishes</span>
                     </h2>
+                    <p class="text-[13px] md:text-[14px] opacity-85" style="color: rgb(255, 239, 214);">
+                      <span dir="auto">Confirm your attendance &amp; share your blessings</span>
+                    </p>
                   </div>
 
-                  <form id="guestbook-form" class="mt-6 mx-auto w-full max-w-full md:max-w-[600px]">
-                    <div class="p-0" style="background: transparent;">
-                      <div class="mb-4">
-                        <input id="guestbook-name" placeholder="Enter your name*" class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" maxlength="500" required type="text" value="" style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif; border-radius: 6px;" />
+                  <form id="rsvp-form" class="mt-5 mx-auto w-full space-y-3.5">
+                    <div>
+                      <input id="rsvp-name" placeholder="Enter your name*" class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" maxlength="500" required type="text" value="" style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif; border-radius: 6px;" />
+                    </div>
+
+                    <div>
+                      <p class="mb-2 text-xs uppercase tracking-[0.1em] text-center" style="color: rgba(255, 223, 175, 0.9);">
+                        <span dir="auto">Will you attend?</span>
+                      </p>
+                      <div class="grid grid-cols-2 gap-2.5">
+                        <label id="rsvp-opt-yes" class="flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs sm:text-sm font-medium cursor-pointer transition-all duration-200" style="border-color: rgba(255, 223, 175, 0.45); background-color: rgba(15, 47, 87, 0.45); color: rgb(255, 239, 214);">
+                          <input class="sr-only" type="radio" name="attending" value="yes" />
+                          <span class="rsvp-icon-dot text-xs">✓</span>
+                          <span class="rsvp-label-text"><span dir="auto">I will attend</span></span>
+                        </label>
+                        <label id="rsvp-opt-no" class="flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2.5 text-xs sm:text-sm font-medium cursor-pointer transition-all duration-200" style="border-color: rgba(255, 223, 175, 0.45); background-color: rgba(15, 47, 87, 0.45); color: rgb(255, 239, 214);">
+                          <input class="sr-only" type="radio" name="attending" value="no" />
+                          <span class="rsvp-icon-dot text-xs">✕</span>
+                          <span class="rsvp-label-text"><span dir="auto">Can&rsquo;t make it</span></span>
+                        </label>
                       </div>
-                      <textarea id="guestbook-wishes" placeholder="Enter your wishes*" class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" rows="4" maxlength="10000" required style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif; border-radius: 6px; resize: none;"></textarea>
-                      <div class="mt-4 flex items-center justify-between text-xs">
-                        <div class="flex items-center text-xs space-x-1">
-                          <button id="ai-wish-btn" type="button" class="p-2 rounded-lg transition-all duration-200 hover:scale-110 text-base leading-none" title="Generate wish with AI" style="background-color: rgba(255, 223, 175, 0.1); color: rgb(255, 223, 175);">🪄</button>
+                    </div>
+
+                    <div id="rsvp-guests-wrap" class="hidden rounded-lg border px-3.5 py-2.5" style="border-color: rgba(255, 223, 175, 0.4); background-color: rgba(15, 47, 87, 0.35);">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-xs sm:text-sm" style="color: rgb(255, 239, 214);"><span dir="auto">Number of guests</span></span>
+                        <div class="flex shrink-0 items-center gap-2.5">
+                          <button id="guests-dec-btn" type="button" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm transition-opacity disabled:opacity-35" style="border-color: rgb(255, 223, 175); color: rgb(255, 223, 175);">&minus;</button>
+                          <span id="guests-count-val" class="w-6 text-center text-sm font-semibold" style="color: rgb(255, 223, 175);">1</span>
+                          <button id="guests-inc-btn" type="button" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm transition-opacity disabled:opacity-35" style="border-color: rgb(255, 223, 175); color: rgb(255, 223, 175);">+</button>
                         </div>
-                        <button type="submit" class="rounded-full px-6 py-2 text-sm font-semibold tracking-[0.04em] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
-                          <span dir="auto">SEND WISHES</span>
-                        </button>
                       </div>
+                    </div>
+
+                    <div>
+                      <textarea id="rsvp-message" placeholder="Enter your wishes &amp; blessings..." class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" rows="4" maxlength="10000" style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif; border-radius: 6px; resize: none;"></textarea>
+                    </div>
+
+                    <div class="pt-1 flex items-center justify-between text-xs">
+                      <button id="ai-wish-btn" type="button" class="p-2 rounded-lg transition-all duration-200 hover:scale-110 text-base leading-none" title="Suggested wishes" style="background-color: rgba(255, 223, 175, 0.12); color: rgb(255, 223, 175);">🪄</button>
+                      <button id="rsvp-submit-btn" type="submit" class="rounded-full px-6 py-2.5 text-xs sm:text-sm font-semibold tracking-[0.05em] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
+                        <span dir="auto">CONFIRM &amp; SEND</span>
+                      </button>
                     </div>
                   </form>
 
-                  <div id="wishes-list" class="mt-8 w-full space-y-3 overflow-y-auto pr-2 mx-auto max-w-full md:max-w-[600px]">
-                    <p class="text-center text-sm opacity-70 flex flex-col items-center">
-                      <span dir="auto">No wishes yet. Be the first!</span>
+                  <div class="mt-7 mx-auto w-full max-w-full md:max-w-[540px]">
+                    <p id="rsvp-summary-title" class="mb-3 hidden text-center text-xs uppercase tracking-[0.14em]" style="color: rgba(255, 223, 175, 0.9); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
+                      Guest Responses &amp; Wishes
                     </p>
+                    <div id="wishes-list" class="max-h-[340px] w-full space-y-3 overflow-y-auto pr-1">
+                      <p class="text-center text-sm opacity-70 flex flex-col items-center">
+                        <span dir="auto">No responses or wishes yet. Be the first!</span>
+                      </p>
+                    </div>
                   </div>
                 </section>
 
@@ -729,72 +750,6 @@ THE WEDDING OF OUR CHILDREN</span>
             </div>
           </div>
         </main>
-      </div>
-    </div>
-  </div>
-
-  <!-- RSVP Modal -->
-  <div id="rsvp-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 transition-all duration-300 bg-black/60 backdrop-blur-sm">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[85vh] relative overflow-hidden transition-all duration-300 scale-100 opacity-100">
-      <div class="relative px-6 pt-6 pb-4">
-        <button id="rsvp-close-btn" type="button" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors" aria-label="Close">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <div class="px-6 pb-6 overflow-y-auto max-h-[calc(85vh-72px)]">
-        <div data-showcase-keep="" class="">
-          <h2 class="text-xl font-semibold text-gray-900 mb-1"><span dir="auto">Confirm your attendance</span></h2>
-          <div class="text-sm text-gray-500 mb-6"><span dir="auto">Your presence would be an honor. Please RSVP so we can prepare the warmest welcome for you.</span></div>
-          <form id="rsvp-form" class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5"><span dir="auto">Your name</span></label>
-              <input id="rsvp-name" required placeholder="Enter your name" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow placeholder:text-gray-400 bg-white text-gray-900" type="text" value="" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"><span dir="auto">Will you attend?</span></label>
-              <div class="space-y-2">
-                <label id="rsvp-opt-yes" class="flex items-center gap-3 py-2.5 px-3 rounded-xl border-2 cursor-pointer transition-all duration-200 border-gray-100 bg-gray-50/50 hover:border-gray-200 hover:bg-gray-50">
-                  <input class="sr-only" type="radio" name="attending" value="yes" />
-                  <div class="rsvp-icon-wrap w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-gray-200">
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                  </div>
-                  <span class="rsvp-label-text text-sm font-medium text-gray-700"><span dir="auto">I will attend</span></span>
-                </label>
-                <label id="rsvp-opt-no" class="flex items-center gap-3 py-2.5 px-3 rounded-xl border-2 cursor-pointer transition-all duration-200 border-gray-100 bg-gray-50/50 hover:border-gray-200 hover:bg-gray-50">
-                  <input class="sr-only" type="radio" name="attending" value="no" />
-                  <div class="rsvp-icon-wrap w-8 h-8 rounded-full flex items-center justify-center transition-colors bg-gray-200">
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                  </div>
-                  <span class="rsvp-label-text text-sm font-medium text-gray-700"><span dir="auto">Sorry, I can't make it</span></span>
-                </label>
-              </div>
-            </div>
-
-            <div id="rsvp-guests-wrap" class="hidden animate-in fade-in slide-in-from-top-2 duration-200 space-y-3">
-              <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                <label class="min-w-0 flex-1 basis-28 text-sm font-medium text-gray-700"><span dir="auto">Number of guests (including you)</span></label>
-                <div class="ms-auto flex shrink-0 items-center gap-2.5">
-                  <button id="guests-dec-btn" type="button" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
-                  </button>
-                  <span id="guests-count-val" class="w-8 text-center text-lg font-semibold text-gray-900">1</span>
-                  <button id="guests-inc-btn" type="button" class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div id="rsvp-msg-wrap" class="hidden animate-in fade-in slide-in-from-top-2 duration-200 space-y-1.5">
-              <label class="block text-sm font-medium text-gray-700"><span dir="auto">Message to the couple</span></label>
-              <textarea id="rsvp-message" rows="3" maxlength="1000" placeholder="Leave a note (optional)" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-base sm:text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-shadow placeholder:text-gray-400 resize-none"></textarea>
-            </div>
-
-            <button id="rsvp-submit-btn" type="submit" disabled class="w-full py-3.5 text-sm font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px -2px;">
-              <span dir="auto">Confirm</span>
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   </div>

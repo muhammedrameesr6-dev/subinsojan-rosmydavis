@@ -51,24 +51,17 @@
 
   const addToCalLink = document.getElementById('add-to-calendar-link');
 
-  const rsvpOpenBtn = document.getElementById('rsvp-open-btn');
-  const rsvpModal = document.getElementById('rsvp-modal');
-  const rsvpCloseBtn = document.getElementById('rsvp-close-btn');
   const rsvpForm = document.getElementById('rsvp-form');
   const rsvpNameInput = document.getElementById('rsvp-name');
   const rsvpOptYes = document.getElementById('rsvp-opt-yes');
   const rsvpOptNo = document.getElementById('rsvp-opt-no');
   const rsvpGuestsWrap = document.getElementById('rsvp-guests-wrap');
-  const rsvpMsgWrap = document.getElementById('rsvp-msg-wrap');
   const rsvpMessageInput = document.getElementById('rsvp-message');
   const rsvpSubmitBtn = document.getElementById('rsvp-submit-btn');
   const guestsDecBtn = document.getElementById('guests-dec-btn');
   const guestsIncBtn = document.getElementById('guests-inc-btn');
   const guestsCountVal = document.getElementById('guests-count-val');
 
-  const guestbookForm = document.getElementById('guestbook-form');
-  const guestbookName = document.getElementById('guestbook-name');
-  const guestbookWishes = document.getElementById('guestbook-wishes');
   const wishesListEl = document.getElementById('wishes-list');
 
   const aiWishBtn = document.getElementById('ai-wish-btn');
@@ -205,45 +198,21 @@
     });
   }
 
-  // --- RSVP Modal ---
-  function openRsvpModal() {
-    rsvpModal.classList.remove('hidden');
-    rsvpModal.classList.add('flex');
-  }
-
-  function closeRsvpModal() {
-    rsvpModal.classList.add('hidden');
-    rsvpModal.classList.remove('flex');
-  }
-
+  // --- Unified RSVP & Blessings ---
   function styleRadioOption(labelEl, active, tone) {
-    const iconWrap = labelEl.querySelector('.rsvp-icon-wrap');
-    const iconSvg = iconWrap.querySelector('svg');
-    const textEl = labelEl.querySelector('.rsvp-label-text');
-
-    labelEl.classList.remove(
-      'border-gray-100', 'bg-gray-50/50', 'hover:border-gray-200', 'hover:bg-gray-50',
-      'border-emerald-500', 'bg-emerald-50/50', 'border-rose-400', 'bg-rose-50/50'
-    );
-    iconWrap.classList.remove('bg-gray-200', 'bg-emerald-500', 'bg-rose-500');
-    iconSvg.classList.remove('text-gray-500', 'text-white');
-    textEl.classList.remove('text-gray-700', 'text-emerald-700', 'text-rose-700');
-
+    if (!labelEl) return;
     if (active && tone === 'yes') {
-      labelEl.classList.add('border-emerald-500', 'bg-emerald-50/50');
-      iconWrap.classList.add('bg-emerald-500');
-      iconSvg.classList.add('text-white');
-      textEl.classList.add('text-emerald-700');
+      labelEl.style.borderColor = '#6ee7b7';
+      labelEl.style.backgroundColor = 'rgba(16, 185, 129, 0.22)';
+      labelEl.style.color = '#ecfdf5';
     } else if (active && tone === 'no') {
-      labelEl.classList.add('border-rose-400', 'bg-rose-50/50');
-      iconWrap.classList.add('bg-rose-500');
-      iconSvg.classList.add('text-white');
-      textEl.classList.add('text-rose-700');
+      labelEl.style.borderColor = '#fda4af';
+      labelEl.style.backgroundColor = 'rgba(244, 63, 94, 0.22)';
+      labelEl.style.color = '#fff1f2';
     } else {
-      labelEl.classList.add('border-gray-100', 'bg-gray-50/50', 'hover:border-gray-200', 'hover:bg-gray-50');
-      iconWrap.classList.add('bg-gray-200');
-      iconSvg.classList.add('text-gray-500');
-      textEl.classList.add('text-gray-700');
+      labelEl.style.borderColor = 'rgba(255, 223, 175, 0.45)';
+      labelEl.style.backgroundColor = 'rgba(15, 47, 87, 0.45)';
+      labelEl.style.color = '#ffefd6';
     }
   }
 
@@ -252,44 +221,43 @@
     styleRadioOption(rsvpOptYes, choice === 'yes', 'yes');
     styleRadioOption(rsvpOptNo, choice === 'no', 'no');
 
-    if (choice === 'yes') {
-      rsvpGuestsWrap.classList.remove('hidden');
-      rsvpMsgWrap.classList.remove('hidden');
-    } else {
-      rsvpGuestsWrap.classList.add('hidden');
-      rsvpMsgWrap.classList.remove('hidden');
+    if (rsvpGuestsWrap) {
+      if (choice === 'yes') {
+        rsvpGuestsWrap.classList.remove('hidden');
+      } else {
+        rsvpGuestsWrap.classList.add('hidden');
+      }
     }
-    rsvpSubmitBtn.disabled = false;
   }
 
   function updateGuestCounter(delta) {
     guestCount = Math.max(1, Math.min(20, guestCount + delta));
-    guestsCountVal.textContent = String(guestCount);
-    guestsDecBtn.disabled = guestCount <= 1;
-    guestsIncBtn.disabled = guestCount >= 20;
+    if (guestsCountVal) guestsCountVal.textContent = String(guestCount);
+    if (guestsDecBtn) guestsDecBtn.disabled = guestCount <= 1;
+    if (guestsIncBtn) guestsIncBtn.disabled = guestCount >= 20;
   }
 
-  rsvpOpenBtn.addEventListener('click', openRsvpModal);
-  rsvpCloseBtn.addEventListener('click', closeRsvpModal);
-  rsvpModal.addEventListener('click', function (e) {
-    if (e.target === rsvpModal) closeRsvpModal();
-  });
+  if (rsvpOptYes && rsvpOptYes.querySelector('input')) {
+    rsvpOptYes.querySelector('input').addEventListener('change', function () {
+      updateRsvpChoice('yes');
+    });
+  }
+  if (rsvpOptNo && rsvpOptNo.querySelector('input')) {
+    rsvpOptNo.querySelector('input').addEventListener('change', function () {
+      updateRsvpChoice('no');
+    });
+  }
+  if (guestsDecBtn) {
+    guestsDecBtn.addEventListener('click', function () {
+      updateGuestCounter(-1);
+    });
+  }
+  if (guestsIncBtn) {
+    guestsIncBtn.addEventListener('click', function () {
+      updateGuestCounter(1);
+    });
+  }
 
-  rsvpOptYes.querySelector('input').addEventListener('change', function () {
-    updateRsvpChoice('yes');
-  });
-  rsvpOptNo.querySelector('input').addEventListener('change', function () {
-    updateRsvpChoice('no');
-  });
-  guestsDecBtn.addEventListener('click', function () {
-    updateGuestCounter(-1);
-  });
-  guestsIncBtn.addEventListener('click', function () {
-    updateGuestCounter(1);
-  });
-
-  const rsvpListWrap = document.getElementById('rsvp-list-wrap');
-  const rsvpListEl = document.getElementById('rsvp-list');
   const rsvpSummaryTitle = document.getElementById('rsvp-summary-title');
 
   const SYNCED_KEYS_STORAGE_KEY = 'wedding_subin_rosmy_synced_keys';
@@ -318,99 +286,6 @@
     } catch (_) {}
   }
 
-  function renderRsvps() {
-    if (!rsvpListWrap || !rsvpListEl) return;
-    const rsvps = loadRsvps();
-    if (!rsvps.length) {
-      rsvpListWrap.classList.add('hidden');
-      rsvpListEl.innerHTML = '';
-      return;
-    }
-
-    rsvpListWrap.classList.remove('hidden');
-    if (rsvpSummaryTitle) {
-      const totalAttending = rsvps.reduce((sum, item) => sum + (item.attending ? (item.guests || 1) : 0), 0);
-      rsvpSummaryTitle.textContent =
-        'Guest Responses (' + rsvps.length + (totalAttending ? ' · ' + totalAttending + ' Attending' : '') + ')';
-    }
-
-    rsvpListEl.innerHTML = '';
-    rsvps.forEach((item) => {
-      const card = document.createElement('div');
-      card.className = 'rounded-lg border px-4 py-2.5 text-left';
-      card.style.cssText = 'border-color: rgba(255, 223, 175, 0.3); background-color: rgba(15, 47, 87, 0.45);';
-
-      const topRow = document.createElement('div');
-      topRow.className = 'flex flex-wrap items-center justify-between gap-2';
-
-      const nameEl = document.createElement('p');
-      nameEl.className = 'text-sm font-semibold';
-      nameEl.style.color = '#ffdfaf';
-      nameEl.textContent = item.name;
-
-      const badge = document.createElement('span');
-      badge.className = 'rounded-full px-2.5 py-0.5 text-[11px] font-medium';
-      if (item.attending) {
-        const count = item.guests || 1;
-        badge.style.cssText = 'background-color: rgba(16, 185, 129, 0.18); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.35);';
-        badge.textContent = 'Attending · ' + count + (count === 1 ? ' Guest' : ' Guests');
-      } else {
-        badge.style.cssText = 'background-color: rgba(255, 239, 214, 0.1); color: rgba(255, 239, 214, 0.8); border: 1px solid rgba(255, 223, 175, 0.25);';
-        badge.textContent = "Can't Make It";
-      }
-
-      topRow.appendChild(nameEl);
-      topRow.appendChild(badge);
-      card.appendChild(topRow);
-
-      if (item.message) {
-        const msgEl = document.createElement('p');
-        msgEl.className = 'mt-1 text-xs whitespace-pre-line';
-        msgEl.style.color = '#ffefd6';
-        msgEl.textContent = item.message;
-        card.appendChild(msgEl);
-      }
-
-      rsvpListEl.appendChild(card);
-    });
-  }
-
-  rsvpForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = rsvpNameInput.value.trim();
-    if (!name || !attendingChoice) return;
-
-    const entry = {
-      name: name,
-      attending: attendingChoice === 'yes',
-      guests: attendingChoice === 'yes' ? guestCount : 0,
-      message: rsvpMessageInput.value.trim(),
-      createdAt: new Date().toISOString()
-    };
-
-    const existing = loadRsvps().slice();
-    existing.unshift(entry);
-    if (remoteConfigured) {
-      remoteRsvps = existing;
-    }
-    saveLocalRsvps(existing);
-    renderRsvps();
-    postCommunityEntry('rsvp', entry);
-
-    closeRsvpModal();
-    rsvpForm.reset();
-    attendingChoice = null;
-    guestCount = 1;
-    guestsCountVal.textContent = '1';
-    styleRadioOption(rsvpOptYes, false, 'yes');
-    styleRadioOption(rsvpOptNo, false, 'no');
-    rsvpGuestsWrap.classList.add('hidden');
-    rsvpMsgWrap.classList.add('hidden');
-    rsvpSubmitBtn.disabled = true;
-    showToast('Thank you! Your RSVP has been recorded.');
-  });
-
-  // --- Guestbook & Suggested Wishes ---
   function loadWishes() {
     if (remoteConfigured && Array.isArray(remoteWishes)) return remoteWishes;
     return readLocalArray(WISHES_STORAGE_KEY);
@@ -449,29 +324,143 @@
     } catch (_) {}
   }
 
-  function renderWishes() {
+  function renderCommunity() {
+    if (!wishesListEl) return;
+    const rsvps = loadRsvps();
     const wishes = loadWishes();
-    if (!wishes.length) {
+    const combined = [];
+
+    rsvps.forEach((item, idx) => {
+      combined.push({ kind: 'rsvp', item: item, idx: idx, ts: Date.parse(item.createdAt || '') || 0 });
+    });
+    wishes.forEach((item, idx) => {
+      combined.push({ kind: 'wish', item: item, idx: rsvps.length + idx, ts: Date.parse(item.createdAt || '') || 0 });
+    });
+
+    combined.sort((a, b) => {
+      if (b.ts !== a.ts) return b.ts - a.ts;
+      return a.idx - b.idx;
+    });
+
+    if (rsvpSummaryTitle) {
+      if (!combined.length) {
+        rsvpSummaryTitle.classList.add('hidden');
+      } else {
+        const totalAttending = rsvps.reduce((sum, item) => sum + (item.attending ? (item.guests || 1) : 0), 0);
+        rsvpSummaryTitle.classList.remove('hidden');
+        rsvpSummaryTitle.textContent =
+          'Guest Responses & Wishes (' + combined.length + (totalAttending ? ' · ' + totalAttending + ' Attending' : '') + ')';
+      }
+    }
+
+    if (!combined.length) {
       wishesListEl.innerHTML =
-        '<p class="text-center text-sm opacity-70 flex flex-col items-center"><span dir="auto">No wishes yet. Be the first!</span></p>';
+        '<p class="text-center text-sm opacity-70 flex flex-col items-center"><span dir="auto">No responses or wishes yet. Be the first!</span></p>';
       return;
     }
+
     wishesListEl.innerHTML = '';
-    wishes.forEach((item) => {
+    combined.forEach((entry) => {
+      const item = entry.item;
       const card = document.createElement('div');
       card.className = 'rounded-lg border px-4 py-3 text-left';
       card.style.cssText = 'border-color: rgba(255, 223, 175, 0.35); background-color: rgba(15, 47, 87, 0.45);';
+
+      const topRow = document.createElement('div');
+      topRow.className = 'flex flex-wrap items-center justify-between gap-2';
+
       const nameEl = document.createElement('p');
       nameEl.className = 'text-sm font-semibold';
       nameEl.style.color = '#ffdfaf';
       nameEl.textContent = item.name;
-      const msgEl = document.createElement('p');
-      msgEl.className = 'mt-1 text-sm whitespace-pre-line';
-      msgEl.style.color = '#ffefd6';
-      msgEl.textContent = item.message;
-      card.appendChild(nameEl);
-      card.appendChild(msgEl);
+      topRow.appendChild(nameEl);
+
+      if (entry.kind === 'rsvp') {
+        const badge = document.createElement('span');
+        badge.className = 'rounded-full px-2.5 py-0.5 text-[11px] font-medium';
+        if (item.attending) {
+          const count = item.guests || 1;
+          badge.style.cssText = 'background-color: rgba(16, 185, 129, 0.18); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.35);';
+          badge.textContent = 'Attending · ' + count + (count === 1 ? ' Guest' : ' Guests');
+        } else {
+          badge.style.cssText = 'background-color: rgba(255, 239, 214, 0.1); color: rgba(255, 239, 214, 0.8); border: 1px solid rgba(255, 223, 175, 0.25);';
+          badge.textContent = "Can't Make It";
+        }
+        topRow.appendChild(badge);
+      }
+
+      card.appendChild(topRow);
+
+      if (item.message) {
+        const msgEl = document.createElement('p');
+        msgEl.className = 'mt-1.5 text-sm whitespace-pre-line';
+        msgEl.style.color = '#ffefd6';
+        msgEl.textContent = item.message;
+        card.appendChild(msgEl);
+      }
+
       wishesListEl.appendChild(card);
+    });
+  }
+
+  function renderRsvps() {
+    renderCommunity();
+  }
+
+  function renderWishes() {
+    renderCommunity();
+  }
+
+  if (rsvpForm) {
+    rsvpForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = rsvpNameInput ? rsvpNameInput.value.trim() : '';
+      const message = rsvpMessageInput ? rsvpMessageInput.value.trim() : '';
+      if (!name) return;
+
+      if (!attendingChoice && !message) {
+        showToast('Please select attendance or enter your wishes.');
+        return;
+      }
+
+      const createdAt = new Date().toISOString();
+      if (attendingChoice) {
+        const entry = {
+          name: name,
+          attending: attendingChoice === 'yes',
+          guests: attendingChoice === 'yes' ? guestCount : 0,
+          message: message,
+          createdAt: createdAt
+        };
+        const existing = loadRsvps().slice();
+        existing.unshift(entry);
+        if (remoteConfigured) {
+          remoteRsvps = existing;
+        }
+        saveLocalRsvps(existing);
+        renderCommunity();
+        postCommunityEntry('rsvp', entry);
+        showToast('Thank you! Your RSVP & wishes have been recorded.');
+      } else {
+        const entry = { name: name, message: message, createdAt: createdAt };
+        const wishes = loadWishes().slice();
+        wishes.unshift(entry);
+        if (remoteConfigured) {
+          remoteWishes = wishes;
+        }
+        saveLocalWishes(wishes);
+        renderCommunity();
+        postCommunityEntry('wish', entry);
+        showToast('Your wishes have been sent!');
+      }
+
+      rsvpForm.reset();
+      attendingChoice = null;
+      guestCount = 1;
+      if (guestsCountVal) guestsCountVal.textContent = '1';
+      styleRadioOption(rsvpOptYes, false, 'yes');
+      styleRadioOption(rsvpOptNo, false, 'no');
+      if (rsvpGuestsWrap) rsvpGuestsWrap.classList.add('hidden');
     });
   }
 
@@ -594,24 +583,6 @@
       .catch(() => {});
   }
 
-  guestbookForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = guestbookName.value.trim();
-    const message = guestbookWishes.value.trim();
-    if (!name || !message) return;
-    const entry = { name: name, message: message, createdAt: new Date().toISOString() };
-    const wishes = loadWishes().slice();
-    wishes.unshift(entry);
-    if (remoteConfigured) {
-      remoteWishes = wishes;
-    }
-    saveLocalWishes(wishes);
-    guestbookForm.reset();
-    renderWishes();
-    postCommunityEntry('wish', entry);
-    showToast('Your wishes have been sent!');
-  });
-
   function renderSuggestedWishes() {
     const list = WISH_BATCHES[currentWishBatch % WISH_BATCHES.length];
     suggestedWishesList.innerHTML = '';
@@ -624,7 +595,7 @@
       p.textContent = text;
       btn.appendChild(p);
       btn.addEventListener('click', function () {
-        guestbookWishes.value = text;
+        if (rsvpMessageInput) rsvpMessageInput.value = text;
         closeWishesModal();
       });
       suggestedWishesList.appendChild(btn);
