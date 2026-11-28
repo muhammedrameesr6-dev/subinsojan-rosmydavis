@@ -1,7 +1,4 @@
 (function () {
-  const WISHES_STORAGE_KEY = 'chungdoi_clone_wishes_subin_rosmy';
-  const RSVP_STORAGE_KEY = 'chungdoi_clone_rsvp_subin_rosmy';
-  const COMMUNITY_API_URL = '/api/community';
   const RSVP_WHATSAPP_NUMBER = '916238629637';
 
   const WISH_BATCHES = [
@@ -62,8 +59,6 @@
   const guestsDecBtn = document.getElementById('guests-dec-btn');
   const guestsIncBtn = document.getElementById('guests-inc-btn');
   const guestsCountVal = document.getElementById('guests-count-val');
-
-  const wishesListEl = document.getElementById('wishes-list');
 
   const aiWishBtn = document.getElementById('ai-wish-btn');
   const wishesModal = document.getElementById('wishes-modal');
@@ -259,159 +254,6 @@
     });
   }
 
-  const rsvpSummaryTitle = document.getElementById('rsvp-summary-title');
-
-  const SYNCED_KEYS_STORAGE_KEY = 'wedding_subin_rosmy_synced_keys';
-  let remoteConfigured = false;
-  let remoteWishes = null;
-  let remoteRsvps = null;
-  let backfillStarted = false;
-
-  function readLocalArray(storageKey) {
-    try {
-      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (_) {
-      return [];
-    }
-  }
-
-  function loadRsvps() {
-    if (remoteConfigured && Array.isArray(remoteRsvps)) return remoteRsvps;
-    return readLocalArray(RSVP_STORAGE_KEY);
-  }
-
-  function saveLocalRsvps(list) {
-    try {
-      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(list));
-    } catch (_) {}
-  }
-
-  function loadWishes() {
-    if (remoteConfigured && Array.isArray(remoteWishes)) return remoteWishes;
-    return readLocalArray(WISHES_STORAGE_KEY);
-  }
-
-  function saveLocalWishes(list) {
-    try {
-      localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(list));
-    } catch (_) {}
-  }
-
-  function entrySignature(kind, item) {
-    if (!item || typeof item !== 'object') return '';
-    const base = kind + '|' + String(item.name || '').trim().toLowerCase() + '|' + String(item.message || '').trim().toLowerCase();
-    if (kind === 'rsvp') {
-      return base + '|' + Boolean(item.attending) + '|' + (parseInt(item.guests, 10) || 0);
-    }
-    return base;
-  }
-
-  function readSyncedMap() {
-    try {
-      const parsed = JSON.parse(localStorage.getItem(SYNCED_KEYS_STORAGE_KEY) || '{}');
-      return parsed && typeof parsed === 'object' ? parsed : {};
-    } catch (_) {
-      return {};
-    }
-  }
-
-  function markSyncedSignature(sig) {
-    if (!sig) return;
-    try {
-      const map = readSyncedMap();
-      map[sig] = 1;
-      localStorage.setItem(SYNCED_KEYS_STORAGE_KEY, JSON.stringify(map));
-    } catch (_) {}
-  }
-
-  function renderCommunity() {
-    if (!wishesListEl) return;
-    const rsvps = loadRsvps();
-    const wishes = loadWishes();
-    const combined = [];
-
-    rsvps.forEach((item, idx) => {
-      combined.push({ kind: 'rsvp', item: item, idx: idx, ts: Date.parse(item.createdAt || '') || 0 });
-    });
-    wishes.forEach((item, idx) => {
-      combined.push({ kind: 'wish', item: item, idx: rsvps.length + idx, ts: Date.parse(item.createdAt || '') || 0 });
-    });
-
-    combined.sort((a, b) => {
-      if (b.ts !== a.ts) return b.ts - a.ts;
-      return a.idx - b.idx;
-    });
-
-    if (rsvpSummaryTitle) {
-      if (!combined.length) {
-        rsvpSummaryTitle.classList.add('hidden');
-      } else {
-        const totalAttending = rsvps.reduce((sum, item) => sum + (item.attending ? (item.guests || 1) : 0), 0);
-        rsvpSummaryTitle.classList.remove('hidden');
-        rsvpSummaryTitle.textContent =
-          'Guest Responses & Wishes (' + combined.length + (totalAttending ? ' · ' + totalAttending + ' Attending' : '') + ')';
-      }
-    }
-
-    if (!combined.length) {
-      wishesListEl.innerHTML =
-        '<p class="text-center text-sm opacity-70 flex flex-col items-center"><span dir="auto">No responses or wishes yet. Be the first!</span></p>';
-      return;
-    }
-
-    wishesListEl.innerHTML = '';
-    combined.forEach((entry) => {
-      const item = entry.item;
-      const card = document.createElement('div');
-      card.className = 'rounded-lg border px-4 py-3 text-left';
-      card.style.cssText = 'border-color: rgba(255, 223, 175, 0.35); background-color: rgba(15, 47, 87, 0.45);';
-
-      const topRow = document.createElement('div');
-      topRow.className = 'flex flex-wrap items-center justify-between gap-2';
-
-      const nameEl = document.createElement('p');
-      nameEl.className = 'text-sm font-semibold';
-      nameEl.style.color = '#ffdfaf';
-      nameEl.textContent = item.name;
-      topRow.appendChild(nameEl);
-
-      if (entry.kind === 'rsvp') {
-        const badge = document.createElement('span');
-        badge.className = 'rounded-full px-2.5 py-0.5 text-[11px] font-medium';
-        if (item.attending) {
-          const count = item.guests || 1;
-          badge.style.cssText = 'background-color: rgba(16, 185, 129, 0.18); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.35);';
-          badge.textContent = 'Attending · ' + count + (count === 1 ? ' Guest' : ' Guests');
-        } else {
-          badge.style.cssText = 'background-color: rgba(255, 239, 214, 0.1); color: rgba(255, 239, 214, 0.8); border: 1px solid rgba(255, 223, 175, 0.25);';
-          badge.textContent = "Can't Make It";
-        }
-        topRow.appendChild(badge);
-      }
-
-      card.appendChild(topRow);
-
-      if (item.message) {
-        const msgEl = document.createElement('p');
-        msgEl.className = 'mt-1.5 text-sm whitespace-pre-line';
-        msgEl.style.color = '#ffefd6';
-        msgEl.textContent = item.message;
-        card.appendChild(msgEl);
-      }
-
-      wishesListEl.appendChild(card);
-    });
-  }
-
-  function renderRsvps() {
-    renderCommunity();
-  }
-
-  function renderWishes() {
-    renderCommunity();
-  }
-
   const rsvpWaBanner = document.getElementById('rsvp-wa-banner');
   const rsvpWaLink = document.getElementById('rsvp-wa-link');
 
@@ -445,37 +287,6 @@
       }
 
       const waUrl = buildRsvpWhatsAppUrl(name, attendingChoice, guestCount, message);
-      const createdAt = new Date().toISOString();
-
-      if (attendingChoice) {
-        const entry = {
-          name: name,
-          attending: attendingChoice === 'yes',
-          guests: attendingChoice === 'yes' ? guestCount : 0,
-          message: message,
-          createdAt: createdAt
-        };
-        const existing = loadRsvps().slice();
-        existing.unshift(entry);
-        if (remoteConfigured) {
-          remoteRsvps = existing;
-        }
-        saveLocalRsvps(existing);
-        renderCommunity();
-        postCommunityEntry('rsvp', entry);
-        showToast('Opening WhatsApp to send your RSVP & wishes!');
-      } else {
-        const entry = { name: name, message: message, createdAt: createdAt };
-        const wishes = loadWishes().slice();
-        wishes.unshift(entry);
-        if (remoteConfigured) {
-          remoteWishes = wishes;
-        }
-        saveLocalWishes(wishes);
-        renderCommunity();
-        postCommunityEntry('wish', entry);
-        showToast('Opening WhatsApp to send your wishes!');
-      }
 
       if (rsvpWaLink) {
         rsvpWaLink.href = waUrl;
@@ -487,6 +298,8 @@
         window.open(waUrl, '_blank', 'noopener,noreferrer');
       } catch (_) {}
 
+      showToast('Opening WhatsApp to send your RSVP & wishes!');
+
       rsvpForm.reset();
       attendingChoice = null;
       guestCount = 1;
@@ -495,125 +308,6 @@
       styleRadioOption(rsvpOptNo, false, 'no');
       if (rsvpGuestsWrap) rsvpGuestsWrap.classList.add('hidden');
     });
-  }
-
-  function uploadEntryRequest(kind, entry) {
-    return fetch(COMMUNITY_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kind: kind, entry: entry })
-    }).then((res) => (res.ok ? res.json() : null));
-  }
-
-  function syncUnsyncedLocalEntries(serverWishes, serverRsvps) {
-    if (backfillStarted) return Promise.resolve(false);
-    backfillStarted = true;
-
-    const syncedMap = readSyncedMap();
-    const remoteSet = {};
-    serverWishes.forEach((w) => {
-      remoteSet[entrySignature('wish', w)] = true;
-    });
-    serverRsvps.forEach((r) => {
-      remoteSet[entrySignature('rsvp', r)] = true;
-    });
-
-    const queue = [];
-    const localWishes = readLocalArray(WISHES_STORAGE_KEY).slice().reverse();
-    localWishes.forEach((w) => {
-      const sig = entrySignature('wish', w);
-      if (w && w.name && w.message && !remoteSet[sig] && !syncedMap[sig]) {
-        remoteSet[sig] = true;
-        queue.push({ kind: 'wish', entry: w, sig: sig });
-      }
-    });
-
-    const localRsvps = readLocalArray(RSVP_STORAGE_KEY).slice().reverse();
-    localRsvps.forEach((r) => {
-      const sig = entrySignature('rsvp', r);
-      if (r && r.name && !remoteSet[sig] && !syncedMap[sig]) {
-        remoteSet[sig] = true;
-        queue.push({ kind: 'rsvp', entry: r, sig: sig });
-      }
-    });
-
-    if (!queue.length) return Promise.resolve(false);
-
-    let chain = Promise.resolve(null);
-    queue.forEach((item) => {
-      chain = chain.then(() =>
-        uploadEntryRequest(item.kind, item.entry)
-          .then((resp) => {
-            if (resp && resp.configured && resp.ok) {
-              markSyncedSignature(item.sig);
-            }
-            return resp;
-          })
-          .catch(() => null)
-      );
-    });
-
-    return chain.then((lastResp) => {
-      if (lastResp && lastResp.configured && lastResp.ok) {
-        if (Array.isArray(lastResp.wishes)) {
-          remoteWishes = lastResp.wishes;
-          saveLocalWishes(remoteWishes);
-        }
-        if (Array.isArray(lastResp.rsvps)) {
-          remoteRsvps = lastResp.rsvps;
-          saveLocalRsvps(remoteRsvps);
-        }
-        renderWishes();
-        renderRsvps();
-        return true;
-      }
-      return false;
-    });
-  }
-
-  function fetchCommunityData() {
-    fetch(COMMUNITY_API_URL, { cache: 'no-store' })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data && data.configured) {
-          const nextWishes = Array.isArray(data.wishes) ? data.wishes : [];
-          const nextRsvps = Array.isArray(data.rsvps) ? data.rsvps : [];
-          syncUnsyncedLocalEntries(nextWishes, nextRsvps).then((didBackfill) => {
-            remoteConfigured = true;
-            if (!didBackfill) {
-              remoteWishes = nextWishes;
-              remoteRsvps = nextRsvps;
-              saveLocalWishes(remoteWishes);
-              saveLocalRsvps(remoteRsvps);
-              renderWishes();
-              renderRsvps();
-            }
-          });
-        }
-      })
-      .catch(() => {});
-  }
-
-  function postCommunityEntry(kind, entry) {
-    const sig = entrySignature(kind, entry);
-    uploadEntryRequest(kind, entry)
-      .then((data) => {
-        if (data && data.configured && data.ok) {
-          remoteConfigured = true;
-          markSyncedSignature(sig);
-          if (Array.isArray(data.wishes)) {
-            remoteWishes = data.wishes;
-            saveLocalWishes(remoteWishes);
-            renderWishes();
-          }
-          if (Array.isArray(data.rsvps)) {
-            remoteRsvps = data.rsvps;
-            saveLocalRsvps(remoteRsvps);
-            renderRsvps();
-          }
-        }
-      })
-      .catch(() => {});
   }
 
   function renderSuggestedWishes() {
@@ -1164,13 +858,4 @@
     window.addEventListener('pointerdown', unlockOnce, { passive: true, capture: true });
     window.addEventListener('touchstart', unlockOnce, { passive: true, capture: true });
   }
-
-  renderRsvps();
-  renderWishes();
-  fetchCommunityData();
-  setInterval(function () {
-    if (!document.hidden && remoteConfigured) {
-      fetchCommunityData();
-    }
-  }, 20000);
 })();
