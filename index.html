@@ -696,6 +696,11 @@ THE WEDDING OF OUR CHILDREN</span>
                       <textarea id="rsvp-message" placeholder="Enter your wishes &amp; blessings..." class="w-full rounded-lg border px-4 py-3 text-sm focus:outline-none" rows="4" maxlength="10000" style="border-color: rgb(255, 223, 175); color: rgb(255, 239, 214); background-color: transparent; font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif; border-radius: 6px; resize: none;"></textarea>
                     </div>
 
+                    <label class="flex items-center justify-center gap-2 text-xs cursor-pointer select-none" style="color: rgba(255, 239, 214, 0.9);">
+                      <input id="rsvp-send-wa" type="checkbox" checked class="h-3.5 w-3.5 rounded border" style="accent-color: rgb(255, 223, 175);" />
+                      <span dir="auto">Also send RSVP &amp; wishes on WhatsApp</span>
+                    </label>
+
                     <div class="pt-1 flex items-center justify-between text-xs">
                       <button id="ai-wish-btn" type="button" class="p-2 rounded-lg transition-all duration-200 hover:scale-110 text-base leading-none" title="Suggested wishes" style="background-color: rgba(255, 223, 175, 0.12); color: rgb(255, 223, 175);">🪄</button>
                       <button id="rsvp-submit-btn" type="submit" class="rounded-full px-6 py-2.5 text-xs sm:text-sm font-semibold tracking-[0.05em] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
@@ -703,6 +708,13 @@ THE WEDDING OF OUR CHILDREN</span>
                       </button>
                     </div>
                   </form>
+
+                  <div id="rsvp-wa-banner" class="mt-4 mx-auto hidden w-full max-w-[280px] md:max-w-[420px] rounded-lg border px-4 py-3 text-center" style="border-color: rgba(110, 231, 183, 0.45); background-color: rgba(16, 185, 129, 0.12);">
+                    <p class="text-xs mb-2" style="color: rgb(236, 253, 245);">Your response is recorded below. Tap below if WhatsApp didn&rsquo;t open automatically:</p>
+                    <a id="rsvp-wa-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 rounded-full px-5 py-2 text-xs font-semibold transition-transform hover:scale-105" style="background-color: rgb(37, 211, 102); color: rgb(10, 31, 20);">
+                      <span>Send on WhatsApp</span>
+                    </a>
+                  </div>
 
                   <div class="mt-7 mx-auto w-full max-w-full md:max-w-[540px]">
                     <p id="rsvp-summary-title" class="mb-3 hidden text-center text-xs uppercase tracking-[0.14em]" style="color: rgba(255, 223, 175, 0.9); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
