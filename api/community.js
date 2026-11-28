@@ -2,8 +2,23 @@ const STORAGE_KEY = 'wedding_subin_rosmy_community';
 const MAX_ITEMS = 500;
 
 function getRedisConfig() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  let url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  let token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!url || !token) {
+    const keys = Object.keys(process.env);
+    const urlKey = keys.find((k) => k.endsWith('_REST_API_URL') || k.endsWith('_REDIS_REST_URL'));
+    if (urlKey) {
+      const prefix = urlKey.replace(/(_REST_API_URL|_REDIS_REST_URL)$/, '');
+      url = process.env[urlKey];
+      token =
+        process.env[`${prefix}_REST_API_TOKEN`] ||
+        process.env[`${prefix}_REDIS_REST_TOKEN`] ||
+        process.env.KV_REST_API_TOKEN ||
+        process.env.UPSTASH_REDIS_REST_TOKEN;
+    }
+  }
+
   if (!url || !token) return null;
   return { url: url.replace(/\/+$/, ''), token };
 }
