@@ -647,13 +647,20 @@ THE WEDDING OF OUR CHILDREN</span>
                   <img alt="" aria-hidden="true" class="pointer-events-none mx-auto block h-auto w-[70.4%] max-w-[333px] object-contain md:max-w-[398px] mt-2" loading="lazy" decoding="async" src="images/themes/baroque-v2-dark-blue/golden-line-decoration.webp" style="filter: drop-shadow(rgba(0, 0, 0, 0.25) 4px 4px 2px);" />
                 </section>
 
-                <!-- RSVP CTA -->
-                <div class="relative z-10 flex w-full flex-col items-center justify-center" data-landing-screenshot-id="invite-rsvp">
+                <!-- RSVP CTA & Live Attendance List -->
+                <div class="relative z-10 flex w-full flex-col items-center justify-center px-6" data-landing-screenshot-id="invite-rsvp" style="font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
                   <button id="rsvp-open-btn" type="button" class="inline-flex items-center justify-center rounded-full px-8 py-2 text-[13px] font-semibold tracking-[0.06em] transition-transform hover:scale-[1.03]" style="background-color: rgb(255, 223, 175); color: rgb(81, 20, 25); font-family: &quot;Lora&quot;, &quot;EB Garamond&quot;, serif;">
                     <span class="relative z-10 flex min-h-0 items-center justify-center gap-2">
                       <span dir="auto">CONFIRM ATTENDANCE</span>
                     </span>
                   </button>
+
+                  <div id="rsvp-list-wrap" class="mt-6 hidden w-full max-w-[340px] md:max-w-[460px]">
+                    <p id="rsvp-summary-title" class="mb-3 text-center text-xs uppercase tracking-[0.14em]" style="color: rgba(255, 223, 175, 0.9); font-family: &quot;Playfair Display&quot;, &quot;Lora&quot;, serif;">
+                      Guest Responses
+                    </p>
+                    <div id="rsvp-list" class="max-h-[260px] w-full space-y-2.5 overflow-y-auto pr-1"></div>
+                  </div>
                 </div>
 
                 <!-- Guestbook Section -->

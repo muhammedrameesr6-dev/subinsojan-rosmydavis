@@ -1,6 +1,7 @@
 (function () {
   const WISHES_STORAGE_KEY = 'chungdoi_clone_wishes_subin_rosmy';
   const RSVP_STORAGE_KEY = 'chungdoi_clone_rsvp_subin_rosmy';
+  const COMMUNITY_API_URL = '/api/community';
 
   const WISH_BATCHES = [
     [
@@ -287,21 +288,108 @@
     updateGuestCounter(1);
   });
 
+  const rsvpListWrap = document.getElementById('rsvp-list-wrap');
+  const rsvpListEl = document.getElementById('rsvp-list');
+  const rsvpSummaryTitle = document.getElementById('rsvp-summary-title');
+
+  let remoteConfigured = false;
+  let remoteWishes = null;
+  let remoteRsvps = null;
+
+  function loadRsvps() {
+    if (remoteConfigured && Array.isArray(remoteRsvps)) return remoteRsvps;
+    try {
+      return JSON.parse(localStorage.getItem(RSVP_STORAGE_KEY) || '[]');
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveLocalRsvps(list) {
+    try {
+      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(list));
+    } catch (_) {}
+  }
+
+  function renderRsvps() {
+    if (!rsvpListWrap || !rsvpListEl) return;
+    const rsvps = loadRsvps();
+    if (!rsvps.length) {
+      rsvpListWrap.classList.add('hidden');
+      rsvpListEl.innerHTML = '';
+      return;
+    }
+
+    rsvpListWrap.classList.remove('hidden');
+    if (rsvpSummaryTitle) {
+      const totalAttending = rsvps.reduce((sum, item) => sum + (item.attending ? (item.guests || 1) : 0), 0);
+      rsvpSummaryTitle.textContent =
+        'Guest Responses (' + rsvps.length + (totalAttending ? ' · ' + totalAttending + ' Attending' : '') + ')';
+    }
+
+    rsvpListEl.innerHTML = '';
+    rsvps.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'rounded-lg border px-4 py-2.5 text-left';
+      card.style.cssText = 'border-color: rgba(255, 223, 175, 0.3); background-color: rgba(15, 47, 87, 0.45);';
+
+      const topRow = document.createElement('div');
+      topRow.className = 'flex flex-wrap items-center justify-between gap-2';
+
+      const nameEl = document.createElement('p');
+      nameEl.className = 'text-sm font-semibold';
+      nameEl.style.color = '#ffdfaf';
+      nameEl.textContent = item.name;
+
+      const badge = document.createElement('span');
+      badge.className = 'rounded-full px-2.5 py-0.5 text-[11px] font-medium';
+      if (item.attending) {
+        const count = item.guests || 1;
+        badge.style.cssText = 'background-color: rgba(16, 185, 129, 0.18); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.35);';
+        badge.textContent = 'Attending · ' + count + (count === 1 ? ' Guest' : ' Guests');
+      } else {
+        badge.style.cssText = 'background-color: rgba(255, 239, 214, 0.1); color: rgba(255, 239, 214, 0.8); border: 1px solid rgba(255, 223, 175, 0.25);';
+        badge.textContent = "Can't Make It";
+      }
+
+      topRow.appendChild(nameEl);
+      topRow.appendChild(badge);
+      card.appendChild(topRow);
+
+      if (item.message) {
+        const msgEl = document.createElement('p');
+        msgEl.className = 'mt-1 text-xs whitespace-pre-line';
+        msgEl.style.color = '#ffefd6';
+        msgEl.textContent = item.message;
+        card.appendChild(msgEl);
+      }
+
+      rsvpListEl.appendChild(card);
+    });
+  }
+
   rsvpForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const name = rsvpNameInput.value.trim();
     if (!name || !attendingChoice) return;
-    try {
-      const existing = JSON.parse(localStorage.getItem(RSVP_STORAGE_KEY) || '[]');
-      existing.push({
-        name: name,
-        attending: attendingChoice === 'yes',
-        guests: attendingChoice === 'yes' ? guestCount : 0,
-        message: rsvpMessageInput.value.trim(),
-        createdAt: new Date().toISOString()
-      });
-      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(existing));
-    } catch (_) {}
+
+    const entry = {
+      name: name,
+      attending: attendingChoice === 'yes',
+      guests: attendingChoice === 'yes' ? guestCount : 0,
+      message: rsvpMessageInput.value.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    const existing = loadRsvps().slice();
+    existing.unshift(entry);
+    if (remoteConfigured) {
+      remoteRsvps = existing;
+    }
+    saveLocalRsvps(existing);
+    renderRsvps();
+    postCommunityEntry('rsvp', entry);
+
     closeRsvpModal();
     rsvpForm.reset();
     attendingChoice = null;
@@ -317,11 +405,18 @@
 
   // --- Guestbook & Suggested Wishes ---
   function loadWishes() {
+    if (remoteConfigured && Array.isArray(remoteWishes)) return remoteWishes;
     try {
       return JSON.parse(localStorage.getItem(WISHES_STORAGE_KEY) || '[]');
     } catch (_) {
       return [];
     }
+  }
+
+  function saveLocalWishes(list) {
+    try {
+      localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(list));
+    } catch (_) {}
   }
 
   function renderWishes() {
@@ -350,18 +445,63 @@
     });
   }
 
+  function fetchCommunityData() {
+    fetch(COMMUNITY_API_URL, { cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.configured) {
+          remoteConfigured = true;
+          remoteWishes = Array.isArray(data.wishes) ? data.wishes : [];
+          remoteRsvps = Array.isArray(data.rsvps) ? data.rsvps : [];
+          saveLocalWishes(remoteWishes);
+          saveLocalRsvps(remoteRsvps);
+          renderWishes();
+          renderRsvps();
+        }
+      })
+      .catch(() => {});
+  }
+
+  function postCommunityEntry(kind, entry) {
+    fetch(COMMUNITY_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: kind, entry: entry })
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.configured && data.ok) {
+          remoteConfigured = true;
+          if (Array.isArray(data.wishes)) {
+            remoteWishes = data.wishes;
+            saveLocalWishes(remoteWishes);
+            renderWishes();
+          }
+          if (Array.isArray(data.rsvps)) {
+            remoteRsvps = data.rsvps;
+            saveLocalRsvps(remoteRsvps);
+            renderRsvps();
+          }
+        }
+      })
+      .catch(() => {});
+  }
+
   guestbookForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const name = guestbookName.value.trim();
     const message = guestbookWishes.value.trim();
     if (!name || !message) return;
-    const wishes = loadWishes();
-    wishes.unshift({ name: name, message: message, createdAt: new Date().toISOString() });
-    try {
-      localStorage.setItem(WISHES_STORAGE_KEY, JSON.stringify(wishes));
-    } catch (_) {}
+    const entry = { name: name, message: message, createdAt: new Date().toISOString() };
+    const wishes = loadWishes().slice();
+    wishes.unshift(entry);
+    if (remoteConfigured) {
+      remoteWishes = wishes;
+    }
+    saveLocalWishes(wishes);
     guestbookForm.reset();
     renderWishes();
+    postCommunityEntry('wish', entry);
     showToast('Your wishes have been sent!');
   });
 
@@ -914,5 +1054,12 @@
     window.addEventListener('touchstart', unlockOnce, { passive: true, capture: true });
   }
 
+  renderRsvps();
   renderWishes();
+  fetchCommunityData();
+  setInterval(function () {
+    if (!document.hidden && remoteConfigured) {
+      fetchCommunityData();
+    }
+  }, 20000);
 })();
